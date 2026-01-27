@@ -58,4 +58,26 @@ public final class Constants
   {
     public static final int intakeMotorId = 11;
   }
+
+  public static class ShooterConstants
+  {
+    public static final int flywheelMotorId = 12;
+    public static final double highVelocity = 1500;
+    public static final double lowVelocity = 900;
+
+    public static double P = 0;
+    public static double I = 0;
+    public static double D = 0;
+
+    public static double S = 0;
+    public static double V = 0;
+    public static double A = 0;
+
+    public static double[] stepSizes = {10.0, 1.0, 0.1, 0.001, 0.0001};
+    
+  }
+  public static class VisionConstants
+  {
+
+  }
 }
