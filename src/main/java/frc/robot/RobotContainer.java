@@ -22,6 +22,14 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
+import frc.robot.commands.hopperFeedCommand;
+import frc.robot.commands.intakeArmCommand;
+import frc.robot.commands.shootBallsCommand;
+import frc.robot.subsystems.HopperSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
+import frc.robot.commands.feedBallsCommand;
+import frc.robot.commands.intakeBallsCommand;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import java.io.File;
 import swervelib.SwerveInputStream;
@@ -37,6 +45,11 @@ public class RobotContainer
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final         CommandXboxController driverXbox = new CommandXboxController(0);
   // The robot's subsystems and commands are defined here...
+  private final ShooterSubsystem ShooterSubsystem = new ShooterSubsystem();
+  private final IntakeSubsystem IntakeSubsystem = new IntakeSubsystem();
+  private final HopperSubsystem HopperSubsystem = new HopperSubsystem();
+
+
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
                                                                                 "swerve/neo"));
 
@@ -119,6 +132,10 @@ public class RobotContainer
     
     //Put the autoChooser on the SmartDashboard
     SmartDashboard.putData("Auto Chooser", autoChooser);
+
+    driverXbox.rightTrigger().whileTrue(new shootBallsCommand(ShooterSubsystem));
+    driverXbox.leftTrigger().whileTrue(new feedBallsCommand(HopperSubsystem));
+    driverXbox.a().whileTrue(new intakeBallsCommand(IntakeSubsystem));
 
   }
 
