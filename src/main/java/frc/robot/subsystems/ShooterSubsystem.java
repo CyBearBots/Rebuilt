@@ -1,86 +1,49 @@
 package frc.robot.subsystems;
 
-import com.revrobotics.spark.*;
-import com.revrobotics.spark.config.*;
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkMaxConfig;
 import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.ResetMode;
 import com.revrobotics.PersistMode;
 
-
-import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.Constants.ShooterConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
 
-    private final SparkMax flywheelMotor;
-    private final SparkClosedLoopController pidController;
-
-    private final SimpleMotorFeedforward feedforward;
-
-    private double targetRPM = 0.0;
+    private final SparkMax motor13;
+    private final SparkMax motor9;
 
     public ShooterSubsystem() {
-        flywheelMotor = new SparkMax(
-            ShooterConstants.flywheelMotorId,
-            MotorType.kBrushless
-        );
+        motor13 = new SparkMax(13, MotorType.kBrushless);
+        motor9  = new SparkMax(9,  MotorType.kBrushless);
 
-        pidController = flywheelMotor.getClosedLoopController();
-
-        feedforward = new SimpleMotorFeedforward(
-            ShooterConstants.kS,
-            ShooterConstants.kV,
-            ShooterConstants.kA
-        );
-
-        configureMotor();
+        configureMotor(motor13);
+        configureMotor(motor9);
     }
 
-    private void configureMotor() {
+    private void configureMotor(SparkMax motor) {
         SparkMaxConfig config = new SparkMaxConfig();
 
         config.idleMode(IdleMode.kCoast)
               .smartCurrentLimit(40);
 
-        config.closedLoop
-            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-            .p(ShooterConstants.kP)
-            .i(ShooterConstants.kI)
-            .d(ShooterConstants.kD)
-            .outputRange(-1.0, 1.0);
-
-        flywheelMotor.configure(
+        motor.configure(
             config,
             ResetMode.kResetSafeParameters,
             PersistMode.kPersistParameters
         );
     }
 
-    public void setTargetRPM(double rpm) {
-        targetRPM = rpm;
-
-        double ffVolts = feedforward.calculate(rpm);
-
-        pidController.setSetpoint(
-            rpm,                                   // Velocity setpoint (RPM)
-            SparkBase.ControlType.kVelocity,       // Velocity control
-            ClosedLoopSlot.kSlot0,                 // PID slot
-            ffVolts                                // Arbitrary feedforward (V)
-        );
+    /** Spin shooter motors */
+    public void spin() {
+        motor13.set(-0.04);
+        motor9.set(-0.05);
     }
 
+    /** Stop shooter motors */
     public void stop() {
-        targetRPM = 0.0;
-        flywheelMotor.stopMotor();
-    }
-
-    public double getRPM() {
-        return flywheelMotor.getEncoder().getVelocity();
-    }
-
-    public boolean atSetpoint(double toleranceRPM) {
-        return Math.abs(getRPM() - targetRPM) < toleranceRPM;
+        motor13.stopMotor();
+        motor9.stopMotor();
     }
 }
