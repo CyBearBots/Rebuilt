@@ -23,7 +23,7 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void spin() {
-        motor.set(0.5);
+        motor.set(0.7);
     }
 
     public void stop() {
