@@ -20,12 +20,12 @@ public class HopperSubsystem extends SubsystemBase {
 
     public HopperSubsystem() {
         hopperMotor = new SparkMax(11, MotorType.kBrushless);
-        feederMotor = new SparkMax(14, MotorType.kBrushed);
+        feederMotor = new SparkMax(14, MotorType.kBrushless);
     }
 
     public void spin() {
         hopperMotor.set(-0.8);
-        feederMotor.set(0.9);
+        feederMotor.set(0.4);
     }
 
     public void stop() {

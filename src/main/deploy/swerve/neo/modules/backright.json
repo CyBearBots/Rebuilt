@@ -4,7 +4,7 @@
     "left": -14
   },
 
-  "absoluteEncoderOffset": -151.3,
+  "absoluteEncoderOffset": 118,
   "drive": {
     "type": "sparkmax_neo",
     "id": 3,
@@ -21,7 +21,7 @@
     "canbus": null
   },
   "inverted": {
-    "drive": true,
+    "drive": false,
     "angle": false
   },
   "absoluteEncoderInverted": true
