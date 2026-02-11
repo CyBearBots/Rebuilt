@@ -25,7 +25,7 @@ public class HopperSubsystem extends SubsystemBase {
 
     public void spin() {
         hopperMotor.set(-0.8);
-        feederMotor.set(0.4);
+        feederMotor.set(-0.4);
     }
 
     public void stop() {

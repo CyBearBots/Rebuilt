@@ -37,8 +37,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
     /** Spin shooter motors */
     public void spin() {
-        motor13.set(-0.20);//bottom
-        motor9.set(-0.25);//top
+        motor13.set(-0.23);//bottom, .20
+        motor9.set(-0.30);//top, .25
     }
 
     /** Stop shooter motors */

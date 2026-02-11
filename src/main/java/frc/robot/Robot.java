@@ -4,9 +4,13 @@
 
 package frc.robot;
 
+import com.studica.frc.AHRS;
+import com.studica.frc.AHRS.NavXComType;
+
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
@@ -28,6 +32,9 @@ public class Robot extends TimedRobot
   public Robot()
   {
     instance = this;
+
+    AHRS gyro = new AHRS(NavXComType.kMXP_SPI);
+    Shuffleboard.getTab("GyroWindow").add(gyro);
   }
 
   public static Robot getInstance()
