@@ -1,25 +1,49 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.ShooterSubsystem;
 
 //Shoots balls out of the robot (top motor + middle motor)
-public class shootBallsCommand extends Command { 
-    
-    private final ShooterSubsystem shooter;
+public class shootBallsCommand extends Command {
 
-    public shootBallsCommand(ShooterSubsystem shooter) {
+    private final ShooterSubsystem shooter;
+    private final double topRPM;
+    private final double bottomRPM;
+
+    public shootBallsCommand(
+        ShooterSubsystem shooter,
+        double topRPM,
+        double bottomRPM
+    ) {
         this.shooter = shooter;
+        this.topRPM = topRPM;
+        this.bottomRPM = bottomRPM;
+
         addRequirements(shooter);
     }
 
     @Override
     public void initialize() {
-        shooter.spin();
+        shooter.setTargetRPM(topRPM, bottomRPM);
     }
 
     @Override
     public void end(boolean interrupted) {
         shooter.stop();
+    }
+
+    // @Override
+    // public boolean isFinished() {
+    //     return shooter.atSetpoint(
+    //         topRPM,
+    //         bottomRPM,
+    //         ShooterConstants.rpmTolerance
+    //     );
+    // }
+
+    @Override
+    public boolean isFinished() {
+        return false;
     }
 }

@@ -5,13 +5,32 @@ import com.revrobotics.spark.*;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
 public class ArmSubsystem extends SubsystemBase {
-    
+
     private SparkMax motor;
 
-    double currentTargetVelocity;
-
-    public ArmSubsystem(int motorId){
-        motor = new SparkMax(motorId, MotorType.kBrushless); 
+    public ArmSubsystem() {
+        motor = new SparkMax(10, MotorType.kBrushless);
     }
+
+    private final double ARM_UP_SPEED = 0.5; 
+    //placeholder
+    private final double ARM_DOWN_SPEED = -0.5;
+
+    public void armUp() {
+        motor.set(ARM_UP_SPEED);
+    }
+
+    public void armDown() {
+        motor.set(ARM_DOWN_SPEED);
+    }
+
+    public void stop() {
+        motor.stopMotor();
+    }
+    
+    @Override
+    public void periodic() {}
+
+
 
 }

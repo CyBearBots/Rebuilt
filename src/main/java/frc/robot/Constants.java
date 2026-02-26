@@ -61,21 +61,20 @@ public final class Constants
 
   public static class ShooterConstants
   {
-    public static final int flywheelMotorId = 12;
-    public static final double highVelocity = 1500;
-    public static final double lowVelocity = 900;
+    public static final double topRPM = 1500;
+    public static final double backspinRatio = 0.6;
 
-    public static double kP = 0;
+    public static double kP = 0.0002;
     public static double kI = 0;
     public static double kD = 0;
 
     public static double kS = 0;
-    public static double kV = 0;
+    public static double kV = 0.0002;
     public static double kA = 0;
 
-    public static double[] stepSizes = {10.0, 1.0, 0.1, 0.001, 0.0001};
-    
+    public static final double rpmTolerance = 75;
   }
+
   public static class VisionConstants
   {
 

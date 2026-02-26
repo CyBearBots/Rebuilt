@@ -4,8 +4,11 @@
 
 package frc.robot;
 
+import java.io.File;
+
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -22,17 +25,17 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
-import frc.robot.commands.hopperFeedCommand;
+import frc.robot.Constants.ShooterConstants;
+import frc.robot.commands.feedBallsCommand;
 import frc.robot.commands.intakeArmCommand;
-import frc.robot.commands.shootBallsCommand;
+import frc.robot.commands.intakeBallsCommand;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
-import frc.robot.commands.feedBallsCommand;
-import frc.robot.commands.intakeBallsCommand;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
-import java.io.File;
 import swervelib.SwerveInputStream;
+import frc.robot.commands.*;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -45,9 +48,11 @@ public class RobotContainer
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final         CommandXboxController driverXbox = new CommandXboxController(0);
   // The robot's subsystems and commands are defined here...
-  private final ShooterSubsystem ShooterSubsystem = new ShooterSubsystem();
+  private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   private final IntakeSubsystem IntakeSubsystem = new IntakeSubsystem();
   private final HopperSubsystem HopperSubsystem = new HopperSubsystem();
+  private final ArmSubsystem ArmSubsystem = new ArmSubsystem();
+  //private final Vision vision = new Vision(drivebase::getPose, drivebase.getSwerveDrive().field);
 
 
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
@@ -60,9 +65,9 @@ public class RobotContainer
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
    */
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                () -> driverXbox.getLeftY() * 1, // -1
+                                                                () -> driverXbox.getLeftY() * -1, // -1
                                                                 () -> driverXbox.getLeftX() * 1) //-1
-                                                            .withControllerRotationAxis(driverXbox::getRightX)
+                                                            .withControllerRotationAxis(() -> -driverXbox.getRightX())
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(0.8)
                                                             .allianceRelativeControl(true);
@@ -133,9 +138,16 @@ public class RobotContainer
     //Put the autoChooser on the SmartDashboard
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
-    driverXbox.rightTrigger().whileTrue(new shootBallsCommand(ShooterSubsystem));
+    driverXbox.rightTrigger().whileTrue(
+      new shootBallsCommand(
+      shooterSubsystem,
+      ShooterConstants.topRPM,
+      ShooterConstants.topRPM * ShooterConstants.backspinRatio
+    ));
     driverXbox.leftTrigger().whileTrue(new feedBallsCommand(HopperSubsystem));
     driverXbox.a().whileTrue(new intakeBallsCommand(IntakeSubsystem));
+    driverXbox.leftBumper().whileTrue(new intakeArmCommand(ArmSubsystem));
+    //driverXbox.y().whileTrue(new RotateToHubCommand(drivebase, vision));
 
   }
 
