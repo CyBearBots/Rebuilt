@@ -12,12 +12,13 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
 
 public class ShooterSubsystem extends SubsystemBase {
 
-    private final SparkMax motor13;
+    private final SparkMax motor10;
     private final SparkMax motor9;
 
     private final SparkClosedLoopController pid13;
@@ -28,10 +29,10 @@ public class ShooterSubsystem extends SubsystemBase {
     private double targetRPM = 0.0;
 
     public ShooterSubsystem() {
-        motor13 = new SparkMax(13, MotorType.kBrushless);
+        motor10 = new SparkMax(10, MotorType.kBrushless);
         motor9  = new SparkMax(9,  MotorType.kBrushless);
 
-        pid13 = motor13.getClosedLoopController();
+        pid13 = motor10.getClosedLoopController();
         pid9 = motor9.getClosedLoopController();
 
         feedforward = new SimpleMotorFeedforward(
@@ -40,7 +41,7 @@ public class ShooterSubsystem extends SubsystemBase {
             ShooterConstants.kA
         );
 
-        configureMotor(motor13);
+        configureMotor(motor10);
         configureMotor(motor9);
     }
 
@@ -71,6 +72,9 @@ public class ShooterSubsystem extends SubsystemBase {
         double ffVoltsTop = feedforward.calculate(topRPM / 60);
         double ffVoltsBottom = feedforward.calculate(bottomRPM / 60);
 
+        SmartDashboard.putNumber("VoltsTop", ffVoltsTop);
+        SmartDashboard.putNumber("VoltsBottom", ffVoltsBottom);
+
         // TOP MOTOR
         pid9.setSetpoint(
             topRPM,
@@ -97,12 +101,12 @@ public class ShooterSubsystem extends SubsystemBase {
     /** Stop shooter motors */
     public void stop() {
         targetRPM = 0.0;
-        motor13.stopMotor();
+        motor10.stopMotor();
         motor9.stopMotor();
     }
 
     public double getBottomRPM(){
-        return motor13.getEncoder().getVelocity();
+        return motor10.getEncoder().getVelocity();
     }
 
     public double getTopRPM(){

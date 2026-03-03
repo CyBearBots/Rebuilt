@@ -9,7 +9,7 @@ public class ArmSubsystem extends SubsystemBase {
     private SparkMax motor;
 
     public ArmSubsystem() {
-        motor = new SparkMax(10, MotorType.kBrushless);
+        motor = new SparkMax(12, MotorType.kBrushless);
     }
 
     private final double ARM_UP_SPEED = 0.5; 
