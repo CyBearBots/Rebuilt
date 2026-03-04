@@ -15,7 +15,7 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
-
+//brake motors instead
 public class ShooterSubsystem extends SubsystemBase {
 
     private final SparkMax motor10;
