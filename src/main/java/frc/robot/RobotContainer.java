@@ -29,10 +29,10 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.commands.feedBallsCommand;
 import frc.robot.commands.intakeArmCommand;
 import frc.robot.commands.armDownCommand;
-//import frc.robot.commands.intakeBallsCommand;
+import frc.robot.commands.intakeBallsCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
-//import frc.robot.subsystems.IntakeSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import swervelib.SwerveInputStream;
@@ -50,7 +50,7 @@ public class RobotContainer
   final         CommandXboxController driverXbox = new CommandXboxController(0);
   // The robot's subsystems and commands are defined here...
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-  //private final IntakeSubsystem IntakeSubsystem = new IntakeSubsystem();
+  private final IntakeSubsystem IntakeSubsystem = new IntakeSubsystem();
   private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
   private final ArmSubsystem armSubsystem = new ArmSubsystem();
   //private final Vision vision = new Vision(drivebase::getPose, drivebase.getSwerveDrive().field);
@@ -146,7 +146,7 @@ public class RobotContainer
       ShooterConstants.topRPM * ShooterConstants.spinRatio
     ));
     driverXbox.leftTrigger().whileTrue(new feedBallsCommand(hopperSubsystem));
-  //  driverXbox.a().whileTrue(new intakeBallsCommand(IntakeSubsystem));
+    driverXbox.a().whileTrue(new intakeBallsCommand(IntakeSubsystem));
     driverXbox.leftBumper().whileTrue(new intakeArmCommand(armSubsystem));
     driverXbox.rightBumper().whileTrue(new armDownCommand(armSubsystem));
 

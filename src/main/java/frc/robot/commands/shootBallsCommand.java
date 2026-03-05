@@ -11,11 +11,7 @@ public class shootBallsCommand extends Command {
     private final double topRPM;
     private final double bottomRPM;
 
-    public shootBallsCommand(
-        ShooterSubsystem shooter,
-        double topRPM,
-        double bottomRPM
-    ) {
+    public shootBallsCommand(ShooterSubsystem shooter, double topRPM, double bottomRPM) {
         this.shooter = shooter;
         this.topRPM = topRPM;
         this.bottomRPM = bottomRPM;

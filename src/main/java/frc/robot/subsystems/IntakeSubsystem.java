@@ -12,14 +12,14 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 // import com.revrobotics.AbsoluteEncoder;
 // import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 // import edu.wpi.first.wpilibj.Encoder;
-/*
+
 
 public class IntakeSubsystem extends SubsystemBase {
 
     private SparkMax motor;
 
     public IntakeSubsystem() {
-        motor = new SparkMax(15, MotorType.kBrushless);
+        motor = new SparkMax(13, MotorType.kBrushless);
     }
 
     public void spin() {
@@ -33,4 +33,3 @@ public class IntakeSubsystem extends SubsystemBase {
     @Override
     public void periodic() {}
 }
-*/

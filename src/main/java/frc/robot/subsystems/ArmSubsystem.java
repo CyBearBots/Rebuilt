@@ -12,9 +12,9 @@ public class ArmSubsystem extends SubsystemBase {
         motor = new SparkMax(12, MotorType.kBrushless);
     }
 
-    private final double ARM_UP_SPEED = 0.5; 
+    private final double ARM_UP_SPEED = 0.3; 
     //placeholder
-    private final double ARM_DOWN_SPEED = -0.5;
+    private final double ARM_DOWN_SPEED = -0.3;
 
     public void armUp() {
         motor.set(ARM_UP_SPEED);
