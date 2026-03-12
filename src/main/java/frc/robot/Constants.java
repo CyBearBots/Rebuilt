@@ -61,8 +61,8 @@ public final class Constants
 
   public static class ShooterConstants
   {
-    public static final double topRPM = -1125;
-    public static final double spinRatio = -1.2; // Above 1 = topspin, Below 1 = backspin (ignoring negative sign, that's just for motor direction)
+    public static final double topRPM = -1025;
+    public static final double spinRatio = -1.4; // Above 1 = topspin, Below 1 = backspin (ignoring negative sign, that's just for motor direction)
 
     public static double kP = 0.0002;
     public static double kI = 0;
@@ -77,6 +77,6 @@ public final class Constants
 
   public static class VisionConstants
   {
-
+    
   }
 }

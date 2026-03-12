@@ -12,9 +12,15 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
+
+import org.photonvision.PhotonCamera;
+import org.photonvision.PhotonUtils;
+import org.photonvision.targeting.PhotonTrackedTarget;
+
 //brake motors instead
 public class ShooterSubsystem extends SubsystemBase {
 
@@ -27,6 +33,9 @@ public class ShooterSubsystem extends SubsystemBase {
     private final SimpleMotorFeedforward feedforward;
 
     private double targetRPM = 0.0;
+
+    PhotonCamera camera = new PhotonCamera("Camera");
+    double targetID = 12;
 
     public ShooterSubsystem() {
         motor10 = new SparkMax(10, MotorType.kBrushless);
@@ -99,10 +108,15 @@ public class ShooterSubsystem extends SubsystemBase {
     // }
 
     /** Stop shooter motors */
-    public void stop() {
+    //public void stop() {
+    //    targetRPM = 0.0;
+    //    motor10.stopMotor();
+    //    motor9.stopMotor();
+    //}
+    public void stop() { // new stop
         targetRPM = 0.0;
-        motor10.stopMotor();
-        motor9.stopMotor();
+        pid9.setSetpoint(0, SparkBase.ControlType.kVelocity, ClosedLoopSlot.kSlot0, 0);
+        pid13.setSetpoint(0, SparkBase.ControlType.kVelocity, ClosedLoopSlot.kSlot0, 0);
     }
 
     public double getBottomRPM(){
@@ -117,6 +131,32 @@ public class ShooterSubsystem extends SubsystemBase {
         return Math.abs(getTopRPM() - topTarget) < toleranceRPM
             && Math.abs(getBottomRPM() - bottomTarget) < toleranceRPM;
     }
+
+    // public double getDistanceToHub(){
+    //     var result = camera.getLatestResult();
+
+    //     if(result.hasTargets()){
+    //         for(PhotonTrackedTarget target : result.getTargets()){
+    //             if(target.getFiducialId() == targetID){
+    //                 Transform3d targetPose = target.getBestCameraToTarget();
+
+    //                 double x = targetPose.getX();
+    //                 double y = targetPose.getY();
+
+    //                 double horizontalDistance = Math.sqrt(x*x + y*y);
+
+    //                 return horizontalDistance;
+    //             }
+    //         }
+    //     }
+    //     return -1;
+    // }
+
+    // @Override
+    // public void periodic(){
+    //     double distance = getDistanceToHub();
+    //     SmartDashboard.putNumber("DistanceToHub", distance);
+    // }
 }
 
 

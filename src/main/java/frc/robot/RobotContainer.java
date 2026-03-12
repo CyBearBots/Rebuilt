@@ -26,16 +26,14 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.Constants.OperatorConstants;
 import frc.robot.Constants.ShooterConstants;
-import frc.robot.commands.feedBallsCommand;
-import frc.robot.commands.intakeArmCommand;
-import frc.robot.commands.armDownCommand;
-import frc.robot.commands.intakeBallsCommand;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.HopperSubsystem;
 import frc.robot.subsystems.IntakeSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import frc.robot.subsystems.swervedrive.SwerveSubsystem;
 import swervelib.SwerveInputStream;
+//import frc.robot.subsystems.ClimberSubsystem;
+import frc.robot.subsystems.swervedrive.Vision;
 import frc.robot.commands.*;
 
 /**
@@ -53,6 +51,7 @@ public class RobotContainer
   private final IntakeSubsystem IntakeSubsystem = new IntakeSubsystem();
   private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
   private final ArmSubsystem armSubsystem = new ArmSubsystem();
+  //private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
   //private final Vision vision = new Vision(drivebase::getPose, drivebase.getSwerveDrive().field);
 
 
@@ -61,6 +60,8 @@ public class RobotContainer
 
   // Establish a Sendable Chooser that will be able to be sent to the SmartDashboard, allowing selection of desired auto
   private final SendableChooser<Command> autoChooser;
+
+  private final Vision vision = new Vision(drivebase::getPose, drivebase.getSwerveDrive().field);
 
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
@@ -149,8 +150,9 @@ public class RobotContainer
     driverXbox.a().whileTrue(new intakeBallsCommand(IntakeSubsystem));
     driverXbox.leftBumper().whileTrue(new intakeArmCommand(armSubsystem));
     driverXbox.rightBumper().whileTrue(new armDownCommand(armSubsystem));
-
-    //driverXbox.y().whileTrue(new RotateToHubCommand(drivebase, vision));
+    //driverXbox.povUp().whileTrue(new ClimbUpCommand(climberSubsystem));
+    //driverXbox.povDown().whileTrue(new ClimbDownCommand(climberSubsystem));
+    driverXbox.y().whileTrue(new RotateToHubCommand(drivebase.getSwerveDrive(), vision));
 
   }
   
