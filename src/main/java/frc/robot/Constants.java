@@ -44,9 +44,9 @@ public final class Constants
 
     // Joystick Deadband
     public static final double DEADBAND        = 0.1;
-    public static final double LEFT_Y_DEADBAND = 0.1;
-    public static final double RIGHT_X_DEADBAND = 0.1;
-    public static final double TURN_CONSTANT    = 6;
+    public static final double LEFT_Y_DEADBAND = 0.2;
+    public static final double RIGHT_X_DEADBAND = 0.2;
+    public static final double TURN_CONSTANT    = 5;
   }
 
   public static class ArmConstants
@@ -61,7 +61,7 @@ public final class Constants
 
   public static class ShooterConstants
   {
-    public static final double topRPM = -1025;
+    public static final double topRPM = -1050;
     public static final double spinRatio = -1.4; // Above 1 = topspin, Below 1 = backspin (ignoring negative sign, that's just for motor direction)
 
     public static double kP = 0.0002;

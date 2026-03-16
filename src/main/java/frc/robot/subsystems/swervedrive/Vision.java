@@ -337,7 +337,7 @@ public class Vision
     /**
      * Left Camera
      */
-    CAMERA_1("left",
+    CAMERA_1("camera1",
              new Rotation3d(0, Math.toRadians(-24.094), Math.toRadians(30)),
              new Translation3d(Units.inchesToMeters(12.056),
                                Units.inchesToMeters(10.981),

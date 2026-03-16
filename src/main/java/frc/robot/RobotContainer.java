@@ -35,7 +35,6 @@ import swervelib.SwerveInputStream;
 //import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.swervedrive.Vision;
 import frc.robot.commands.*;
-
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
  * little robot logic should actually be handled in the {@link Robot} periodic methods (other than the scheduler calls).
@@ -49,10 +48,9 @@ public class RobotContainer
   // The robot's subsystems and commands are defined here...
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   private final IntakeSubsystem IntakeSubsystem = new IntakeSubsystem();
-  private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
+  private final HopperSubsystem HopperSubsystem = new HopperSubsystem();
   private final ArmSubsystem armSubsystem = new ArmSubsystem();
-  //private final ClimberSubsystem climberSubsystem = new ClimberSubsystem();
-  //private final Vision vision = new Vision(drivebase::getPose, drivebase.getSwerveDrive().field);
+
 
 
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
@@ -61,19 +59,17 @@ public class RobotContainer
   // Establish a Sendable Chooser that will be able to be sent to the SmartDashboard, allowing selection of desired auto
   private final SendableChooser<Command> autoChooser;
 
-  private final Vision vision = new Vision(drivebase::getPose, drivebase.getSwerveDrive().field);
-
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
    */
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                                                 () -> driverXbox.getLeftY() * -1, // -1
-                                                                () -> driverXbox.getLeftX() * 1) //-1
+                                                                () -> driverXbox.getLeftX() * -1) //-1
                                                             .withControllerRotationAxis(() -> -driverXbox.getRightX())
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(0.8)
                                                             .allianceRelativeControl(true);
-
+  private final Vision vision = new Vision(drivebase::getPose, drivebase.getSwerveDrive().field);
   /**
    * Clone's the angular velocity input stream and converts it to a fieldRelative input stream.
    */
@@ -88,8 +84,8 @@ public class RobotContainer
                                                              .allianceRelativeControl(false);
 
   SwerveInputStream driveAngularVelocityKeyboard = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                        () -> -driverXbox.getLeftY(),
-                                                                        () -> -driverXbox.getLeftX())
+                                                                        () -> driverXbox.getLeftY(),
+                                                                        () -> driverXbox.getLeftX())
                                                                     .withControllerRotationAxis(() -> driverXbox.getRawAxis(
                                                                         2))
                                                                     .deadband(OperatorConstants.DEADBAND)
@@ -146,13 +142,12 @@ public class RobotContainer
       ShooterConstants.topRPM,
       ShooterConstants.topRPM * ShooterConstants.spinRatio
     ));
-    driverXbox.leftTrigger().whileTrue(new feedBallsCommand(hopperSubsystem));
+    driverXbox.leftTrigger().whileTrue(new feedBallsCommand(HopperSubsystem));
     driverXbox.a().whileTrue(new intakeBallsCommand(IntakeSubsystem));
     driverXbox.leftBumper().whileTrue(new intakeArmCommand(armSubsystem));
     driverXbox.rightBumper().whileTrue(new armDownCommand(armSubsystem));
-    //driverXbox.povUp().whileTrue(new ClimbUpCommand(climberSubsystem));
-    //driverXbox.povDown().whileTrue(new ClimbDownCommand(climberSubsystem));
     driverXbox.y().whileTrue(new RotateToHubCommand(drivebase.getSwerveDrive(), vision));
+
 
   }
   
@@ -214,8 +209,7 @@ public class RobotContainer
     if (DriverStation.isTest())
     {
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Overrides drive command above!driveFieldOrientedAngularVelocity driveFieldOrientedDirectAngle
-
-      driverXbox.x().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
+      driverXbox.x().whileTrue(new ReverseHopperCommand(HopperSubsystem));
       driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
       driverXbox.back().whileTrue(drivebase.centerModulesCommand());
       driverXbox.leftBumper().onTrue(Commands.none());
@@ -223,7 +217,8 @@ public class RobotContainer
     } else
     {
       driverXbox.b().onTrue((Commands.runOnce(drivebase::zeroGyro)));
-      driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
+      //driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
+      driverXbox.x().whileTrue(new ReverseHopperCommand(HopperSubsystem));
       driverXbox.start().whileTrue(Commands.none());
       driverXbox.back().whileTrue(Commands.none());
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());

@@ -25,13 +25,18 @@ public class HopperSubsystem extends SubsystemBase {
 
     public void spin() {
         hopperMotor.set(-0.6);
-        feederMotor.set(0.7);
+        feederMotor.set(1.0);
     }
 
-    public void stop() {
-        hopperMotor.stopMotor();
-        feederMotor.stopMotor();
-    }
+    public void reverse() {
+    hopperMotor.set(0.6);
+    feederMotor.set(-0.7);
+}
+
+    public void brake() {
+    hopperMotor.set(0);
+    feederMotor.set(0);
+}
 
     @Override
     public void periodic() {}

@@ -27,10 +27,18 @@ public class ShooterSubsystem extends SubsystemBase {
     private final SparkMax motor10;
     private final SparkMax motor9;
 
-    private final SparkClosedLoopController pid13;
-    private final SparkClosedLoopController pid9;
+    private SparkClosedLoopController pid13;
+    private SparkClosedLoopController pid9;
 
-    private final SimpleMotorFeedforward feedforward;
+    private SimpleMotorFeedforward feedforward;
+
+    private double kP = ShooterConstants.kP;
+    private double kI = ShooterConstants.kI;
+    private double kD = ShooterConstants.kD;
+
+    private double kS = ShooterConstants.kS;
+    private double kV = ShooterConstants.kV;
+    private double kA = ShooterConstants.kA;
 
     private double targetRPM = 0.0;
 
@@ -44,14 +52,18 @@ public class ShooterSubsystem extends SubsystemBase {
         pid13 = motor10.getClosedLoopController();
         pid9 = motor9.getClosedLoopController();
 
-        feedforward = new SimpleMotorFeedforward(
-            ShooterConstants.kS,
-            ShooterConstants.kV,
-            ShooterConstants.kA
-        );
+        feedforward = new SimpleMotorFeedforward(kS, kV, kA);
 
         configureMotor(motor10);
         configureMotor(motor9);
+
+        SmartDashboard.putNumber("Shooter kP", kP);
+        SmartDashboard.putNumber("Shooter kI", kI);
+        SmartDashboard.putNumber("Shooter kD", kD);
+
+        SmartDashboard.putNumber("Shooter kS", kS);
+        SmartDashboard.putNumber("Shooter kV", kV);
+        SmartDashboard.putNumber("Shooter kA", kA);
     }
 
     private void configureMotor(SparkMax motor) {
@@ -101,36 +113,72 @@ public class ShooterSubsystem extends SubsystemBase {
         );
     }
 
-    // /** Spin shooter motors */
-    // public void spin() {
-    //     motor13.set(-0.23);//bottom, .20
-    //     motor9.set(-0.30);//top, .25
-    // }
+    @Override
+    public void periodic(){
 
-    /** Stop shooter motors */
-    //public void stop() {
-    //    targetRPM = 0.0;
-    //    motor10.stopMotor();
-    //    motor9.stopMotor();
-    //}
-    public void stop() { // new stop
-        targetRPM = 0.0;
-        pid9.setSetpoint(0, SparkBase.ControlType.kVelocity, ClosedLoopSlot.kSlot0, 0);
-        pid13.setSetpoint(0, SparkBase.ControlType.kVelocity, ClosedLoopSlot.kSlot0, 0);
+        double newP = SmartDashboard.getNumber("Shooter kP", kP);
+        double newI = SmartDashboard.getNumber("Shooter kI", kI);
+        double newD = SmartDashboard.getNumber("Shooter kD", kD);
+
+        double newKS = SmartDashboard.getNumber("Shooter kS", kS);
+        double newKV = SmartDashboard.getNumber("Shooter kV", kV);
+        double newKA = SmartDashboard.getNumber("Shooter kA", kA);
+
+        SparkMaxConfig config = new SparkMaxConfig();
+
+        config.closedLoop
+            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+            .p(kP)
+            .i(kI)
+            .d(kD)
+            .outputRange(-1.0, 1.0);
+
+        motor10.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+        motor9.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kNoPersistParameters);
+
+        if(newKS != kS || newKV != kV || newKA != kA){
+
+            kS = newKS;
+            kV = newKV;
+            kA = newKA;
+
+            feedforward = new SimpleMotorFeedforward(kS, kV, kA);
+        }
+
+        SmartDashboard.putNumber("TopRPM", getTopRPM());
+        SmartDashboard.putNumber("BottomRPM", getBottomRPM());
     }
 
-    public double getBottomRPM(){
-        return motor10.getEncoder().getVelocity();
-    }
+        // /** Spin shooter motors */
+        // public void spin() {
+        //     motor13.set(-0.23);//bottom, .20
+        //     motor9.set(-0.30);//top, .25
+        // }
 
-    public double getTopRPM(){
-        return motor9.getEncoder().getVelocity();
-    }
+        /** Stop shooter motors */
+        //public void stop() {
+        //    targetRPM = 0.0;
+        //    motor10.stopMotor();
+        //    motor9.stopMotor();
+        //}
+        public void stop() { // new stop
+            targetRPM = 0.0;
+            pid9.setSetpoint(0, SparkBase.ControlType.kVelocity, ClosedLoopSlot.kSlot0, 0);
+            pid13.setSetpoint(0, SparkBase.ControlType.kVelocity, ClosedLoopSlot.kSlot0, 0);
+        }
 
-    public boolean atSetpoint(double topTarget, double bottomTarget, double toleranceRPM) {
-        return Math.abs(getTopRPM() - topTarget) < toleranceRPM
-            && Math.abs(getBottomRPM() - bottomTarget) < toleranceRPM;
-    }
+        public double getBottomRPM(){
+            return motor10.getEncoder().getVelocity();
+        }
+
+        public double getTopRPM(){
+            return motor9.getEncoder().getVelocity();
+        }
+
+        public boolean atSetpoint(double topTarget, double bottomTarget, double toleranceRPM) {
+            return Math.abs(getTopRPM() - topTarget) < toleranceRPM
+                && Math.abs(getBottomRPM() - bottomTarget) < toleranceRPM;
+        }
 
     // public double getDistanceToHub(){
     //     var result = camera.getLatestResult();

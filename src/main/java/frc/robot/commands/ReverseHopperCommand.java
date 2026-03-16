@@ -3,19 +3,28 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.HopperSubsystem;
 
-//Rotates the hopper motor to feed balls into the shooter
-public class hopperFeedCommand extends Command {
-    
+public class ReverseHopperCommand extends Command {
+
     private final HopperSubsystem hopper;
 
-    public hopperFeedCommand(HopperSubsystem hopper) {
+    public ReverseHopperCommand(HopperSubsystem hopper) {
         this.hopper = hopper;
         addRequirements(hopper);
     }
 
     @Override
     public void initialize() {
-        hopper.spin();
+        hopper.reverse();
+    }
+
+    @Override
+    public void execute() {
+        hopper.reverse(); 
+    }
+
+    @Override
+    public boolean isFinished() {
+        return false; // run until the button is released (whileTrue handles that)
     }
 
     @Override
@@ -23,4 +32,3 @@ public class hopperFeedCommand extends Command {
         hopper.brake();
     }
 }
-

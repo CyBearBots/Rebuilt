@@ -9,7 +9,7 @@ public class feedBallsCommand extends Command {
     
     private final HopperSubsystem hopper; 
 
-    public feedBallsCommand(HopperSubsystem hopper) {  // Changed parameter type
+    public feedBallsCommand(HopperSubsystem hopper) {  
         this.hopper = hopper;
         addRequirements(hopper);
     }
@@ -21,7 +21,7 @@ public class feedBallsCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        hopper.stop(); 
+        hopper.brake();
     }
 
 }
