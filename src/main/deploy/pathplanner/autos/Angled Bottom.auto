@@ -7,7 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "1a"
+            "pathName": "bottom start to angle"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Bottom Balls Go"
           }
         }
       ]

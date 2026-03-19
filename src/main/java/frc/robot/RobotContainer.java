@@ -146,7 +146,7 @@ public class RobotContainer
     driverXbox.a().whileTrue(new intakeBallsCommand(IntakeSubsystem));
     driverXbox.leftBumper().whileTrue(new intakeArmCommand(armSubsystem));
     driverXbox.rightBumper().whileTrue(new armDownCommand(armSubsystem));
-    driverXbox.y().whileTrue(new RotateToHubCommand(drivebase.getSwerveDrive(), vision));
+    driverXbox.y().whileTrue(new DriveToHubCommand(drivebase.getSwerveDrive(), vision));
 
 
   }

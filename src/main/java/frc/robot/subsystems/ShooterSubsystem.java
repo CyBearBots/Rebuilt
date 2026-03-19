@@ -42,8 +42,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
     private double targetRPM = 0.0;
 
-    PhotonCamera camera = new PhotonCamera("Camera");
+    PhotonCamera camera = new PhotonCamera("Camera1");
     double targetID = 12;
+    double distance;
 
     public ShooterSubsystem() {
         motor10 = new SparkMax(10, MotorType.kBrushless);
@@ -64,6 +65,8 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("Shooter kS", kS);
         SmartDashboard.putNumber("Shooter kV", kV);
         SmartDashboard.putNumber("Shooter kA", kA);
+
+         SmartDashboard.putNumber("DistanceToHub", distance);
     }
 
     private void configureMotor(SparkMax motor) {
@@ -147,6 +150,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
         SmartDashboard.putNumber("TopRPM", getTopRPM());
         SmartDashboard.putNumber("BottomRPM", getBottomRPM());
+
+        distance = getDistanceToHub();
     }
 
         // /** Spin shooter motors */
@@ -180,31 +185,25 @@ public class ShooterSubsystem extends SubsystemBase {
                 && Math.abs(getBottomRPM() - bottomTarget) < toleranceRPM;
         }
 
-    // public double getDistanceToHub(){
-    //     var result = camera.getLatestResult();
+    public double getDistanceToHub(){
+        var result = camera.getLatestResult();
 
-    //     if(result.hasTargets()){
-    //         for(PhotonTrackedTarget target : result.getTargets()){
-    //             if(target.getFiducialId() == targetID){
-    //                 Transform3d targetPose = target.getBestCameraToTarget();
+        if(result.hasTargets()){
+            for(PhotonTrackedTarget target : result.getTargets()){
+                if(target.getFiducialId() == targetID){
+                    Transform3d targetPose = target.getBestCameraToTarget();
 
-    //                 double x = targetPose.getX();
-    //                 double y = targetPose.getY();
+                    double x = targetPose.getX();
+                    double y = targetPose.getY();
 
-    //                 double horizontalDistance = Math.sqrt(x*x + y*y);
+                    double horizontalDistance = Math.sqrt(x*x + y*y);
 
-    //                 return horizontalDistance;
-    //             }
-    //         }
-    //     }
-    //     return -1;
-    // }
-
-    // @Override
-    // public void periodic(){
-    //     double distance = getDistanceToHub();
-    //     SmartDashboard.putNumber("DistanceToHub", distance);
-    // }
+                    return horizontalDistance;
+                }
+            }
+        }
+        return -1;
+    }
 }
 
 

@@ -1,6 +1,5 @@
 package frc.robot.commands;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -10,110 +9,115 @@ import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.swervedrive.Vision;
 import swervelib.SwerveDrive;
+import edu.wpi.first.math.MathUtil;
+import java.util.Optional;
+import edu.wpi.first.math.geometry.Pose3d;
 
-/**
- * Rotates the robot in place so the front of the bot faces the scoring hub (speaker/center hub),
- * preparing for a shot. Uses the robot's current odometry pose to calculate the required heading.
- *
- * <p>The hub position is determined by alliance color automatically via DriverStation.
- */
-public class RotateToHubCommand extends Command {
+public class DriveToHubCommand extends Command {
 
-  // ── Hub positions on the 2025 Reefscape field (meters, WPILib origin) ──
-  // Adjust these to match your actual field measurements / game manual.
-  private static final Translation2d BLUE_HUB = new Translation2d(0.0, 5.547868); // Blue speaker opening
-  private static final Translation2d RED_HUB  = new Translation2d(16.541748, 5.547868); // Red speaker opening
+  private static final double kP_TRANSLATE   = 2.0;  // how fast it drives toward hub
+  private static final double kP_ROTATE      = 0.075;
+  private static final double kD_ROTATE      = 0.004;
+  private static final double MAX_DRIVE_SPEED = 0.4;  // max translation speed (meters/s ish)
+  private static final double MAX_TURN_SPEED  = 0.4;
+  private static final double TRANSLATE_TOLERANCE = 0.05; // meters — close enough
+  private static final double ROTATE_TOLERANCE    = 2.0;  // degrees — close enough
 
-  // ── Tuning ──────────────────────────────────────────────────────────────
-  private static final double kP             = 0.075; // Proportional gain  (tune on robot)
-  private static final double kI             = 0.0;   // Integral gain
-  private static final double kD             = 0.004; // Derivative gain
-  private static final double TOLERANCE_DEG  = 1.5;   // Degrees — "close enough"
-  private static final double MAX_TURN_SPEED = 0.5;   // Max chassis omega (-1 to 1 scale), tune as needed
+  private final SwerveDrive   swerveDrive;
+  private final Vision        vision;
+  private final PIDController rotatePID;
+  private final PIDController xPID;
+  private final PIDController yPID;
 
-  // ── State ────────────────────────────────────────────────────────────────
-  private final SwerveDrive  swerveDrive;
-  private final Vision       vision;
-  private final PIDController pidController;
-  private       Translation2d targetHub;
+  private Pose2d targetPose; // where we want the robot to end up
 
-  /**
-   * Creates a new RotateToHubCommand.
-   *
-   * @param swerveDrive The swerve drive subsystem used for movement and pose.
-   * @param vision      The vision subsystem used to keep pose estimation fresh.
-   */
-  public RotateToHubCommand(SwerveDrive swerveDrive, Vision vision) {
+  public DriveToHubCommand(SwerveDrive swerveDrive, Vision vision) {
     this.swerveDrive = swerveDrive;
     this.vision      = vision;
 
-    pidController = new PIDController(kP, kI, kD);
-    pidController.enableContinuousInput(-180.0, 180.0); // Handle the ±180° wrap-around
-    pidController.setTolerance(TOLERANCE_DEG);
+    rotatePID = new PIDController(kP_ROTATE, 0, kD_ROTATE);
+    rotatePID.enableContinuousInput(-180.0, 180.0);
+    rotatePID.setTolerance(ROTATE_TOLERANCE);
 
-    // NOTE: Add requirements for whichever subsystem wraps swerveDrive in your project,
-    // e.g.  addRequirements(driveSubsystem);
+    xPID = new PIDController(kP_TRANSLATE, 0, 0);
+    xPID.setTolerance(TRANSLATE_TOLERANCE);
+
+    yPID = new PIDController(kP_TRANSLATE, 0, 0);
+    yPID.setTolerance(TRANSLATE_TOLERANCE);
   }
-
-  // ── Command lifecycle ────────────────────────────────────────────────────
 
   @Override
   public void initialize() {
-    // Determine hub position by alliance at command start
     boolean isBlue = DriverStation.getAlliance()
                                   .map(a -> a == Alliance.Blue)
-                                  .orElse(true); // default blue if unknown
-    targetHub = isBlue ? BLUE_HUB : RED_HUB;
+                                  .orElse(true);
 
-    pidController.reset();
+    // Pull hub AprilTag position straight from the field layout JSON
+    // Blue hub = tag 7, Red hub = tag 4 — verify these IDs in your JSON
+    Optional<Pose3d> hubTag = Vision.fieldLayout.getTagPose(isBlue ? 7 : 4);
+
+    if (hubTag.isPresent()) {
+      Translation2d hubTranslation = hubTag.get().toPose2d().getTranslation();
+
+      // Face the hub — point the front of the robot toward it
+      // The robot should end up AT the hub position facing it
+      // You may want an offset here so you stop IN FRONT of the hub, not on top of it
+      // e.g. stop 1.0 meter away — adjust as needed
+      double offsetMeters = 1.0;
+      Pose2d currentPose  = swerveDrive.getPose();
+      Translation2d dir   = hubTranslation.minus(currentPose.getTranslation());
+      double angle        = Math.atan2(dir.getY(), dir.getX());
+      Translation2d stopPoint = hubTranslation.minus(
+          new Translation2d(Math.cos(angle) * offsetMeters,
+                            Math.sin(angle) * offsetMeters));
+
+      targetPose = new Pose2d(stopPoint, new Rotation2d(angle));
+    } else {
+      // Tag not found, just stay put
+      targetPose = swerveDrive.getPose();
+    }
+
+    rotatePID.reset();
+    xPID.reset();
+    yPID.reset();
   }
 
   @Override
   public void execute() {
-    // Keep vision pose estimation current
     vision.updatePoseEstimation(swerveDrive);
 
     Pose2d currentPose = swerveDrive.getPose();
-    double targetAngleDeg = calculateAngleToHub(currentPose.getTranslation(), targetHub);
 
-    double currentAngleDeg = currentPose.getRotation().getDegrees();
-    double rotationOutput   = pidController.calculate(currentAngleDeg, targetAngleDeg);
+    // Translation output
+    double xOutput = MathUtil.clamp(
+        xPID.calculate(currentPose.getX(), targetPose.getX()),
+        -MAX_DRIVE_SPEED, MAX_DRIVE_SPEED);
 
-    // Clamp so we don't spin too fast
-    rotationOutput = MathUtil.clamp(rotationOutput, -MAX_TURN_SPEED, MAX_TURN_SPEED);
+    double yOutput = MathUtil.clamp(
+        yPID.calculate(currentPose.getY(), targetPose.getY()),
+        -MAX_DRIVE_SPEED, MAX_DRIVE_SPEED);
 
-    // Drive with zero translation, only rotation
+    // Rotation output
+    double rotOutput = MathUtil.clamp(
+        rotatePID.calculate(currentPose.getRotation().getDegrees(),
+                            targetPose.getRotation().getDegrees()),
+        -MAX_TURN_SPEED, MAX_TURN_SPEED);
+
     swerveDrive.drive(
-        new Translation2d(0, 0), // no translation
-        rotationOutput,          // omega (rad/s or %-ish depending on YAGSL config)
-        true,                    // field-relative
-        false                    // open loop
+        new Translation2d(xOutput, yOutput),
+        rotOutput,
+        true,   // field-relative
+        false   // open loop
     );
   }
 
   @Override
   public boolean isFinished() {
-    return pidController.atSetpoint();
+    return xPID.atSetpoint() && yPID.atSetpoint() && rotatePID.atSetpoint();
   }
 
   @Override
   public void end(boolean interrupted) {
-    // Stop all motion when done or interrupted
     swerveDrive.drive(new Translation2d(0, 0), 0, true, false);
   }
-
-  // ── Helpers ──────────────────────────────────────────────────────────────
-
-  /**
-   * Calculates the field-relative angle (degrees) the robot needs to face so its
-   * front points at the hub.
-   *
-   * @param robotTranslation Current robot XY position on the field.
-   * @param hub              Target hub XY position on the field.
-   * @return Target heading in degrees, WPILib convention (CCW positive, 0 = field +X).
-   */
-  private double calculateAngleToHub(Translation2d robotTranslation, Translation2d hub) {
-    Translation2d delta = hub.minus(robotTranslation);
-    return new Rotation2d(delta.getX(), delta.getY()).getDegrees();
-  }
-}//woop woop your mom said so 
+}

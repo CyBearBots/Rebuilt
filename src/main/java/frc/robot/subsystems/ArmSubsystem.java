@@ -11,8 +11,8 @@ public class ArmSubsystem extends SubsystemBase {
     private SparkMax motor;
     private RelativeEncoder encoder;
 
-    private static final double ARM_UP_LIMIT   = 50.0;  // max rotations going up
-    private static final double ARM_DOWN_LIMIT = 0.0;   // min rotations going down
+    private static final double ARM_UP_LIMIT   = 24.50; // max rotations going up
+    private static final double ARM_DOWN_LIMIT = -2.20;// min rotations going down
 
     private final double ARM_UP_SPEED   =  0.5;
     private final double ARM_DOWN_SPEED = -0.5;
@@ -50,6 +50,5 @@ public class ArmSubsystem extends SubsystemBase {
     @Override
     public void periodic() {
         SmartDashboard.putNumber("Arm Position", encoder.getPosition());    
-        System.out.println("Arm Position: " + encoder.getPosition());
     }
 }

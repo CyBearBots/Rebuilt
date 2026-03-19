@@ -1,0 +1,37 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "6.8 inches swoft"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "0.67 inches hawd"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "67"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "the final gasseous himself"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
