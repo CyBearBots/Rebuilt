@@ -35,6 +35,8 @@ import swervelib.SwerveInputStream;
 //import frc.robot.subsystems.ClimberSubsystem;
 import frc.robot.subsystems.swervedrive.Vision;
 import frc.robot.commands.*;
+import edu.wpi.first.math.filter.SlewRateLimiter;
+
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
  * little robot logic should actually be handled in the {@link Robot} periodic methods (other than the scheduler calls).
@@ -63,10 +65,15 @@ public class RobotContainer
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
    */
+  private final SlewRateLimiter xLimiter      = new SlewRateLimiter(2.0);
+  private final SlewRateLimiter yLimiter      = new SlewRateLimiter(2.0);
+  private final SlewRateLimiter rotateLimiter = new SlewRateLimiter(2.0);
+
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                () -> driverXbox.getLeftY() * -1, // -1
-                                                                () -> driverXbox.getLeftX() * -1) //-1
-                                                            .withControllerRotationAxis(() -> -driverXbox.getRightX())
+                                                                () -> xLimiter.calculate(driverXbox.getLeftY() * -1),
+                                                                () -> yLimiter.calculate(driverXbox.getLeftX() * -1))
+                                                            .withControllerRotationAxis(
+                                                                () -> rotateLimiter.calculate(-driverXbox.getRightX()))
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(0.8)
                                                             .allianceRelativeControl(true);
