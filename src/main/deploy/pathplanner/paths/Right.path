@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.997265060240964,
-        "y": 0.423
+        "x": 3.66943373493962,
+        "y": 0.40699999999339187
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.087527196218499,
-        "y": 0.7945350084254741
+        "x": 2.759695870917155,
+        "y": 0.7785350084188659
       },
       "isLocked": false,
       "linkedName": null
@@ -45,10 +45,10 @@
     "rotation": 33.69
   },
   "reversed": false,
-  "folder": "Starts",
+  "folder": "RCC Paths",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

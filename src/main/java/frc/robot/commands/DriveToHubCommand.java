@@ -13,7 +13,7 @@ import edu.wpi.first.math.MathUtil;
 import java.util.Optional;
 import edu.wpi.first.math.geometry.Pose3d;
 
-public class DriveToHubCommand extends Command {
+public class driveToHubCommand extends Command {
 
   private static final double kP_TRANSLATE   = 2.0;  // how fast it drives toward hub
   private static final double kP_ROTATE      = 0.075;
@@ -31,7 +31,7 @@ public class DriveToHubCommand extends Command {
 
   private Pose2d targetPose; // where we want the robot to end up
 
-  public DriveToHubCommand(SwerveDrive swerveDrive, Vision vision) {
+  public driveToHubCommand(SwerveDrive swerveDrive, Vision vision) {
     this.swerveDrive = swerveDrive;
     this.vision      = vision;
 

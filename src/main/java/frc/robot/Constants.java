@@ -61,8 +61,12 @@ public final class Constants
 
   public static class ShooterConstants
   {
+
+    // TOP RPM > BOTTOM RPM = TOPSPIN, SHALLOWER LAUNCH ANGLE
+    // BOTTOM RPM > TOP RPM = BACKSPIN, STEEPER LAUNCH ANGLE
+
     public static final double topRPM = -1050;
-    public static final double spinRatio = -1.4; // Above 1 = topspin, Below 1 = backspin (ignoring negative sign, that's just for motor direction)
+    public static final double spinRatio = -1.4; // Above 1 = backspin, Below 1 = topspin (ignoring negative sign, that's just for motor direction)
 
     public static double kP = 0.0002;
     public static double kI = 0;
@@ -73,6 +77,9 @@ public final class Constants
     public static double kA = 0;
 
     public static final double rpmTolerance = 75;
+
+    public static final double passRPM = -4000;
+    public static final double passSpinRatio = -1.1;
   }
 
   public static class VisionConstants

@@ -44,11 +44,12 @@ public class RobotContainer
 {
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
-  final         CommandXboxController driverXbox = new CommandXboxController(0);
+  final CommandXboxController driverXbox = new CommandXboxController(0);
+  final CommandXboxController overrideXbox = new CommandXboxController(1);
   // The robot's subsystems and commands are defined here...
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
-  private final IntakeSubsystem IntakeSubsystem = new IntakeSubsystem();
-  private final HopperSubsystem HopperSubsystem = new HopperSubsystem();
+  private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
+  private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
   private final ArmSubsystem armSubsystem = new ArmSubsystem();
 
 
@@ -122,7 +123,10 @@ public class RobotContainer
     DriverStation.silenceJoystickConnectionWarning(true);
     
     //Create the NamedCommands that will be used in PathPlanner
-    NamedCommands.registerCommand("test", Commands.print("I EXIST"));
+    //NamedCommands.registerCommand("test", Commands.print("I EXIST"));
+    NamedCommands.registerCommand("ResetGyro", (Commands.runOnce(drivebase::zeroGyroWithAlliance)));
+    NamedCommands.registerCommand("FeedBalls", new feedBallsCommand(hopperSubsystem).withTimeout(5));
+    NamedCommands.registerCommand("ShootBalls", new shootBallsCommand(shooterSubsystem, ShooterConstants.topRPM, ShooterConstants.topRPM * ShooterConstants.spinRatio).withTimeout(6));
 
     //Have the autoChooser pull in all PathPlanner autos as options
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -138,16 +142,31 @@ public class RobotContainer
 
     driverXbox.rightTrigger().whileTrue(
       new shootBallsCommand(
-      shooterSubsystem,
-      ShooterConstants.topRPM,
-      ShooterConstants.topRPM * ShooterConstants.spinRatio
+        shooterSubsystem,
+        ShooterConstants.topRPM,
+        ShooterConstants.topRPM * ShooterConstants.spinRatio
     ));
-    driverXbox.leftTrigger().whileTrue(new feedBallsCommand(HopperSubsystem));
-    driverXbox.a().whileTrue(new intakeBallsCommand(IntakeSubsystem));
+
+    driverXbox.leftTrigger().whileTrue(new feedBallsCommand(hopperSubsystem));
+    driverXbox.a().whileTrue(new intakeBallsCommand(intakeSubsystem));
     driverXbox.leftBumper().whileTrue(new intakeArmCommand(armSubsystem));
     driverXbox.rightBumper().whileTrue(new armDownCommand(armSubsystem));
-    driverXbox.y().whileTrue(new DriveToHubCommand(drivebase.getSwerveDrive(), vision));
+    driverXbox.y().whileTrue(new driveToHubCommand(drivebase.getSwerveDrive(), vision));
+    driverXbox.x().whileTrue(new reverseHopperCommand(hopperSubsystem));
+    driverXbox.b().onTrue((Commands.runOnce(drivebase::zeroGyroWithAlliance)));
 
+    overrideXbox.rightTrigger().whileTrue(
+      new shootBallsCommand(
+        shooterSubsystem,
+        ShooterConstants.passRPM,
+        ShooterConstants.passRPM * ShooterConstants.passSpinRatio
+    ));
+
+    overrideXbox.leftTrigger().whileTrue(new feedBallsCommand(hopperSubsystem));
+    overrideXbox.a().whileTrue(new intakeBallsCommand(intakeSubsystem));
+    overrideXbox.leftBumper().whileTrue(new intakeArmCommand(armSubsystem));
+    overrideXbox.rightBumper().whileTrue(new armDownCommand(armSubsystem));
+    overrideXbox.x().whileTrue(new reverseHopperCommand(hopperSubsystem));
 
   }
   
@@ -209,22 +228,19 @@ public class RobotContainer
     if (DriverStation.isTest())
     {
       drivebase.setDefaultCommand(driveFieldOrientedAnglularVelocity); // Overrides drive command above!driveFieldOrientedAngularVelocity driveFieldOrientedDirectAngle
-      driverXbox.x().whileTrue(new ReverseHopperCommand(HopperSubsystem));
+      // driverXbox.x().whileTrue(new reverseHopperCommand(hopperSubsystem));
       driverXbox.start().onTrue((Commands.runOnce(drivebase::zeroGyro)));
       driverXbox.back().whileTrue(drivebase.centerModulesCommand());
       driverXbox.leftBumper().onTrue(Commands.none());
       driverXbox.rightBumper().onTrue(Commands.none());
     } else
     {
-      driverXbox.b().onTrue((Commands.runOnce(drivebase::zeroGyro)));
       //driverXbox.x().onTrue(Commands.runOnce(drivebase::addFakeVisionReading));
-      driverXbox.x().whileTrue(new ReverseHopperCommand(HopperSubsystem));
       driverXbox.start().whileTrue(Commands.none());
       driverXbox.back().whileTrue(Commands.none());
       driverXbox.leftBumper().whileTrue(Commands.runOnce(drivebase::lock, drivebase).repeatedly());
       driverXbox.rightBumper().onTrue(Commands.none());
     }
-
   }
 
   /**

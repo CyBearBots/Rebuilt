@@ -3,12 +3,13 @@
   "robotLength": 0.698,
   "holonomicMode": true,
   "pathFolders": [
-    "rest",
+    "RCC Paths",
     "Starts",
-    "Wong"
+    "Wong",
+    "rest"
   ],
   "autoFolders": [
-    "Test + Comp Autos",
+    "RCC Autos",
     "Wong"
   ],
   "defaultMaxVel": 3.0,
