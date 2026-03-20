@@ -159,8 +159,8 @@ public class RobotContainer
 
     operatorXbox.leftTrigger().whileTrue(new feedBallsCommand(hopperSubsystem));
     operatorXbox.a().whileTrue(new intakeBallsCommand(intakeSubsystem));
-    operatorXbox.leftBumper().whileTrue(new intakeArmCommand(armSubsystem));
-    operatorXbox.rightBumper().whileTrue(new armDownCommand(armSubsystem));
+    operatorXbox.leftBumper().onTrue(new armUpCommand(armSubsystem));
+    operatorXbox.rightBumper().onTrue(new armDownCommand(armSubsystem));
     operatorXbox.y().whileTrue(new driveToHubCommand(drivebase.getSwerveDrive(), vision));
     operatorXbox.x().whileTrue(new reverseHopperCommand(hopperSubsystem));
 
