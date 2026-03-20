@@ -165,6 +165,7 @@ public class RobotContainer
     operatorXbox.x().whileTrue(new reverseHopperCommand(hopperSubsystem));
 
     driverXbox.b().onTrue((Commands.runOnce(drivebase::zeroGyroWithAlliance)));
+    driverXbox.a().whileTrue(new thiefShootCommand(shooterSubsystem));
 
     driverXbox.rightTrigger().whileTrue(
       new shootBallsCommand(

@@ -1,8 +1,5 @@
 package frc.robot.commands;
 
-public class thiefShootCommand {
-    package frc.robot.commands;
-
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.ShooterSubsystem;
 
@@ -18,7 +15,7 @@ public class thiefShootCommand extends Command {
     private static final double THIEF_TOP_RPM    = -5400; // maxing out a NEO is ~5700 RPM
     private static final double THIEF_BOTTOM_RPM = -5400 * 1.0; // equal spin for max distance
 
-    public thiefCommand(ShooterSubsystem shooter) {
+    public thiefShootCommand(ShooterSubsystem shooter) {
         this.shooter = shooter;
         addRequirements(shooter);
     }
@@ -42,6 +39,4 @@ public class thiefShootCommand extends Command {
     public void end(boolean interrupted) {
         shooter.stop();
     }
-}
-    
 }

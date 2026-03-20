@@ -51,7 +51,13 @@ public final class Constants
 
   public static class ArmConstants
   {
-    public static final int armMotorId = 10;
+    public static final double kP = 0.05;
+    public static final double kI = 0.0;
+    public static final double kD = 0.0;
+
+    public static final double armUpLimit = -5.0;
+    public static final double armDownLimit = -20.0;
+
   }
 
   public static class IntakeConstants
