@@ -47,7 +47,7 @@ public class RobotContainer
 
   // Replace with CommandPS4Controller or CommandJoystick if needed
   final CommandXboxController driverXbox = new CommandXboxController(0);
-  final CommandXboxController overrideXbox = new CommandXboxController(1);
+  final CommandXboxController operatorXbox = new CommandXboxController(1);
   // The robot's subsystems and commands are defined here...
   private final ShooterSubsystem shooterSubsystem = new ShooterSubsystem();
   private final IntakeSubsystem intakeSubsystem = new IntakeSubsystem();
@@ -67,7 +67,7 @@ public class RobotContainer
    */
   private final SlewRateLimiter xLimiter      = new SlewRateLimiter(2.0);
   private final SlewRateLimiter yLimiter      = new SlewRateLimiter(2.0);
-  private final SlewRateLimiter rotateLimiter = new SlewRateLimiter(2.0);
+  private final SlewRateLimiter rotateLimiter = new SlewRateLimiter(1.5);
 
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                                                 () -> xLimiter.calculate(driverXbox.getLeftY() * -1),
@@ -134,6 +134,9 @@ public class RobotContainer
     NamedCommands.registerCommand("ResetGyro", (Commands.runOnce(drivebase::zeroGyroWithAlliance)));
     NamedCommands.registerCommand("FeedBalls", new feedBallsCommand(hopperSubsystem).withTimeout(5));
     NamedCommands.registerCommand("ShootBalls", new shootBallsCommand(shooterSubsystem, ShooterConstants.topRPM, ShooterConstants.topRPM * ShooterConstants.spinRatio).withTimeout(6));
+    NamedCommands.registerCommand("ArmDown", new armDownCommand(armSubsystem).withTimeout(1));
+    NamedCommands.registerCommand("IntakeBalls", new intakeBallsCommand(intakeSubsystem).withTimeout(5));
+
 
     //Have the autoChooser pull in all PathPlanner autos as options
     autoChooser = AutoBuilder.buildAutoChooser();
@@ -147,33 +150,28 @@ public class RobotContainer
     //Put the autoChooser on the SmartDashboard
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
-    driverXbox.rightTrigger().whileTrue(
+    operatorXbox.rightTrigger().whileTrue(
       new shootBallsCommand(
         shooterSubsystem,
         ShooterConstants.topRPM,
         ShooterConstants.topRPM * ShooterConstants.spinRatio
     ));
 
-    driverXbox.leftTrigger().whileTrue(new feedBallsCommand(hopperSubsystem));
-    driverXbox.a().whileTrue(new intakeBallsCommand(intakeSubsystem));
-    driverXbox.leftBumper().whileTrue(new intakeArmCommand(armSubsystem));
-    driverXbox.rightBumper().whileTrue(new armDownCommand(armSubsystem));
-    driverXbox.y().whileTrue(new driveToHubCommand(drivebase.getSwerveDrive(), vision));
-    driverXbox.x().whileTrue(new reverseHopperCommand(hopperSubsystem));
+    operatorXbox.leftTrigger().whileTrue(new feedBallsCommand(hopperSubsystem));
+    operatorXbox.a().whileTrue(new intakeBallsCommand(intakeSubsystem));
+    operatorXbox.leftBumper().whileTrue(new intakeArmCommand(armSubsystem));
+    operatorXbox.rightBumper().whileTrue(new armDownCommand(armSubsystem));
+    operatorXbox.y().whileTrue(new driveToHubCommand(drivebase.getSwerveDrive(), vision));
+    operatorXbox.x().whileTrue(new reverseHopperCommand(hopperSubsystem));
+
     driverXbox.b().onTrue((Commands.runOnce(drivebase::zeroGyroWithAlliance)));
 
-    overrideXbox.rightTrigger().whileTrue(
+    driverXbox.rightTrigger().whileTrue(
       new shootBallsCommand(
         shooterSubsystem,
         ShooterConstants.passRPM,
         ShooterConstants.passRPM * ShooterConstants.passSpinRatio
     ));
-
-    overrideXbox.leftTrigger().whileTrue(new feedBallsCommand(hopperSubsystem));
-    overrideXbox.a().whileTrue(new intakeBallsCommand(intakeSubsystem));
-    overrideXbox.leftBumper().whileTrue(new intakeArmCommand(armSubsystem));
-    overrideXbox.rightBumper().whileTrue(new armDownCommand(armSubsystem));
-    overrideXbox.x().whileTrue(new reverseHopperCommand(hopperSubsystem));
 
   }
   

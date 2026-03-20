@@ -58,13 +58,13 @@ public class ShooterSubsystem extends SubsystemBase {
         configureMotor(motor10);
         configureMotor(motor9);
 
-        SmartDashboard.putNumber("Shooter kP", kP);
-        SmartDashboard.putNumber("Shooter kI", kI);
-        SmartDashboard.putNumber("Shooter kD", kD);
+        // SmartDashboard.putNumber("Shooter kP", kP);
+        // SmartDashboard.putNumber("Shooter kI", kI);
+        // SmartDashboard.putNumber("Shooter kD", kD);
 
-        SmartDashboard.putNumber("Shooter kS", kS);
-        SmartDashboard.putNumber("Shooter kV", kV);
-        SmartDashboard.putNumber("Shooter kA", kA);
+        // SmartDashboard.putNumber("Shooter kS", kS);
+        // SmartDashboard.putNumber("Shooter kV", kV);
+        // SmartDashboard.putNumber("Shooter kA", kA);
 
          SmartDashboard.putNumber("DistanceToHub", distance);
     }

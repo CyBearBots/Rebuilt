@@ -78,7 +78,7 @@ public final class Constants
 
     public static final double rpmTolerance = 75;
 
-    public static final double passRPM = -4000;
+    public static final double passRPM = -2100;
     public static final double passSpinRatio = -1.1;
   }
 

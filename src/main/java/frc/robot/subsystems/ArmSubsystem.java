@@ -13,11 +13,11 @@ public class ArmSubsystem extends SubsystemBase {
     private SparkMax motor;
     private RelativeEncoder encoder;
 
-    private static final double ARM_UP_LIMIT   = 24.50;
-    private static final double ARM_DOWN_LIMIT = -2.20;
+    private static final double ARM_UP_LIMIT   = -5.00;
+    private static final double ARM_DOWN_LIMIT = -20.00;
 
-    private final double ARM_UP_SPEED   =  0.5;
-    private final double ARM_DOWN_SPEED = -0.5;
+    private final double ARM_UP_SPEED   =  0.25;
+    private final double ARM_DOWN_SPEED = -0.3;
 
     public ArmSubsystem() {
         motor   = new SparkMax(12, MotorType.kBrushless);
@@ -38,6 +38,7 @@ public class ArmSubsystem extends SubsystemBase {
         } else {
             stop();
         }
+        //motor.set(ARM_UP_SPEED);
     }
 
     public void armDown() {
@@ -46,6 +47,7 @@ public class ArmSubsystem extends SubsystemBase {
         } else {
             stop();
         }
+       // motor.set(ARM_DOWN_SPEED);
     }
 
     public void stop() {

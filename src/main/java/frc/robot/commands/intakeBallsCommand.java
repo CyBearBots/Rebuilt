@@ -19,6 +19,6 @@ public class intakeBallsCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        intake.stop();
+        intake.brake();
     }
 }

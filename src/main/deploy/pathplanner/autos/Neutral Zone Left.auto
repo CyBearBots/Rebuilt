@@ -13,7 +13,38 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Mid"
+            "pathName": "Neutral Left"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ArmDown"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeBalls"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Copy of Copy of Neutral Left"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Copy of Neutral Left"
           }
         },
         {
@@ -46,18 +77,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Copy of Mid"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ArmDown"
           }
         }
       ]
