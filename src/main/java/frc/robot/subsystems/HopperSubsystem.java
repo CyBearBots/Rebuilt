@@ -4,6 +4,7 @@ import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class HopperSubsystem extends SubsystemBase {
@@ -54,6 +55,13 @@ public class HopperSubsystem extends SubsystemBase {
 
     @Override
     public void periodic() {
+        double feederCurrent = feederMotor.getOutputCurrent();
+
+        SmartDashboard.putNumber("Primer Current: ", feederCurrent);
+
+        if(feederCurrent > 35){
+            reverse();
+        }
 
         if (isReversing) {
             hopperMotor.set(REVERSE_SPEED);
