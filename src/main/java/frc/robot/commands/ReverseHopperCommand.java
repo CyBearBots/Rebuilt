@@ -19,7 +19,7 @@ public class reverseHopperCommand extends Command {
 
     @Override
     public void execute() {
-        hopper.reverse(); 
+        //hopper.reverse(); 
     }
 
     @Override
@@ -29,6 +29,6 @@ public class reverseHopperCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        hopper.brake();
+        hopper.stop();
     }
 }

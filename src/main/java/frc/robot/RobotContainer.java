@@ -65,9 +65,9 @@ public class RobotContainer
   /**
    * Converts driver input into a field-relative ChassisSpeeds that is controlled by angular velocity.
    */
-  private final SlewRateLimiter xLimiter      = new SlewRateLimiter(2.0);
-  private final SlewRateLimiter yLimiter      = new SlewRateLimiter(2.0);
-  private final SlewRateLimiter rotateLimiter = new SlewRateLimiter(1.5);
+  private final SlewRateLimiter xLimiter      = new SlewRateLimiter(2.5);
+  private final SlewRateLimiter yLimiter      = new SlewRateLimiter(2.5);
+  private final SlewRateLimiter rotateLimiter = new SlewRateLimiter(2.5);
 
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
                                                                 () -> xLimiter.calculate(driverXbox.getLeftY() * -1),
@@ -133,7 +133,7 @@ public class RobotContainer
     //NamedCommands.registerCommand("test", Commands.print("I EXIST"));
     NamedCommands.registerCommand("ResetGyro", (Commands.runOnce(drivebase::zeroGyroWithAlliance)));
     NamedCommands.registerCommand("FeedBalls", new feedBallsCommand(hopperSubsystem).withTimeout(5));
-    NamedCommands.registerCommand("ShootBalls", new shootBallsCommand(shooterSubsystem, ShooterConstants.topRPM, ShooterConstants.topRPM * ShooterConstants.spinRatio).withTimeout(6));
+    NamedCommands.registerCommand("ShootBalls", new shootBallsCommand(shooterSubsystem).withTimeout(6));
     NamedCommands.registerCommand("ArmDown", new armDownCommand(armSubsystem).withTimeout(1));
     NamedCommands.registerCommand("IntakeBalls", new intakeBallsCommand(intakeSubsystem).withTimeout(5));
 
@@ -152,23 +152,21 @@ public class RobotContainer
 
     operatorXbox.rightTrigger().whileTrue(
       new shootBallsCommand(
-        shooterSubsystem,
-        ShooterConstants.topRPM,
-        ShooterConstants.topRPM * ShooterConstants.spinRatio
+        shooterSubsystem
     ));
 
     operatorXbox.leftTrigger().whileTrue(new feedBallsCommand(hopperSubsystem));
     operatorXbox.a().whileTrue(new intakeBallsCommand(intakeSubsystem));
-    operatorXbox.leftBumper().onTrue(new armUpCommand(armSubsystem));
     operatorXbox.rightBumper().onTrue(new armDownCommand(armSubsystem));
-    operatorXbox.y().whileTrue(new driveToHubCommand(drivebase.getSwerveDrive(), vision));
+    operatorXbox.leftBumper().onTrue(new armUpCommand(armSubsystem));
+    operatorXbox.y().whileTrue(new driveAndShootCommand(drivebase.getSwerveDrive(), vision, shooterSubsystem));
     operatorXbox.x().whileTrue(new reverseHopperCommand(hopperSubsystem));
 
     driverXbox.b().onTrue((Commands.runOnce(drivebase::zeroGyroWithAlliance)));
     driverXbox.a().whileTrue(new thiefShootCommand(shooterSubsystem));
 
     driverXbox.rightTrigger().whileTrue(
-      new shootBallsCommand(
+      new passBallsCommand(
         shooterSubsystem,
         ShooterConstants.passRPM,
         ShooterConstants.passRPM * ShooterConstants.passSpinRatio

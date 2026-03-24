@@ -12,8 +12,8 @@ public class thiefShootCommand extends Command {
     private final ShooterSubsystem shooter;
 
     // Crank it — full send
-    private static final double THIEF_TOP_RPM    = -5400; // maxing out a NEO is ~5700 RPM
-    private static final double THIEF_BOTTOM_RPM = -5400 * 1.0; // equal spin for max distance
+    private static final double THIEF_TOP_RPM    = -4000; // maxing out a NEO is ~5700 RPM
+    private static final double THIEF_BOTTOM_RPM = 4000; // equal spin for max distance
 
     public thiefShootCommand(ShooterSubsystem shooter) {
         this.shooter = shooter;

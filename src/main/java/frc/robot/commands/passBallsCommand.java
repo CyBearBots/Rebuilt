@@ -5,35 +5,29 @@ import frc.robot.Constants.ShooterConstants;
 import frc.robot.subsystems.ShooterSubsystem;
 
 //Shoots balls out of the robot (top motor + middle motor)
-public class shootBallsCommand extends Command {
+public class passBallsCommand extends Command {
 
     private final ShooterSubsystem shooter;
+    private final double topRPM;
+    private final double bottomRPM;
 
     double distanceToHub;
-    double topShootRPM;
 
-    public shootBallsCommand(ShooterSubsystem shooter) {
+    public passBallsCommand(ShooterSubsystem shooter, double topRPM, double bottomRPM) {
         this.shooter = shooter;
+        this.topRPM = topRPM;
+        this.bottomRPM = bottomRPM;
 
         addRequirements(shooter);
     }
 
     @Override
-    public void initialize() {}
+    public void initialize() {
+        shooter.setTargetRPM(topRPM, bottomRPM);
+    }
 
     @Override
-    public void execute() {
-        distanceToHub = shooter.getDistanceToHub(null, 0, 0);
-
-        if (distanceToHub <= 0) {
-            shooter.stop();
-            return;
-        }
-
-        topShootRPM = shooter.calculateRPMFromDistance(distanceToHub);
-
-        shooter.setTargetRPM(topShootRPM, topShootRPM * ShooterConstants.spinRatio);
-    }
+    public void execute() {}
 
     @Override
     public void end(boolean interrupted) {

@@ -17,12 +17,12 @@ public class armDownCommand extends Command {
     
     @Override
     public void initialize() {
-        arm.armDown();
+        arm.armUp();
     }
 
     @Override
     public boolean isFinished(){
-        return arm.atPosition(ArmConstants.armDownLimit);
+        return arm.atPosition(ArmConstants.armUpLimit);
     }
 
     @Override

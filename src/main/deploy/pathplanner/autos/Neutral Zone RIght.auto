@@ -11,19 +11,13 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "Mid"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "ShootBalls"
+                  "pathName": "Neutral Right"
                 }
               },
               {
@@ -39,7 +33,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "FeedBalls"
+                        "name": "ArmDown"
                       }
                     }
                   ]
@@ -49,27 +43,28 @@
           }
         },
         {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeBalls"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Copy of Neutral Right"
+                }
+              }
+            ]
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "Copy of Mid"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ArmDown"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.0
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Copy of Copy of Mid"
+            "pathName": "Copy of Copy of Neutral Right"
           }
         },
         {

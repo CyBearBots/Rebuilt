@@ -16,6 +16,7 @@ import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ShooterConstants;
+import frc.robot.subsystems.swervedrive.Vision;
 
 import org.photonvision.PhotonCamera;
 import org.photonvision.PhotonUtils;
@@ -42,8 +43,9 @@ public class ShooterSubsystem extends SubsystemBase {
 
     private double targetRPM = 0.0;
 
-    PhotonCamera camera = new PhotonCamera("Camera1");
-    double targetID = 12;
+    PhotonCamera camera1 = new PhotonCamera("Camera1");
+    PhotonCamera camera2 = new PhotonCamera("Camera2");
+    double targetID = 9;
     double distance;
 
     public ShooterSubsystem() {
@@ -88,6 +90,17 @@ public class ShooterSubsystem extends SubsystemBase {
             PersistMode.kPersistParameters
         );
     }
+    public double calculateRPMFromDistance(double distanceMeters) {
+
+        //TUNE THESE
+        double kSlope = -900;   // how much RPM changes per meter
+        double kIntercept = -500; // base RPM
+
+        // basic linear model
+        double rpm = kSlope * distanceMeters + kIntercept;
+
+        return rpm;
+    }
 
     public void setTargetRPM(double topRPM, double bottomRPM) {
 
@@ -98,6 +111,8 @@ public class ShooterSubsystem extends SubsystemBase {
 
         SmartDashboard.putNumber("VoltsTop", ffVoltsTop);
         SmartDashboard.putNumber("VoltsBottom", ffVoltsBottom);
+        SmartDashboard.putNumber("Distance", distance);
+        SmartDashboard.putNumber("AutoRPM", topRPM);
 
         // TOP MOTOR
         pid9.setSetpoint(
@@ -151,7 +166,6 @@ public class ShooterSubsystem extends SubsystemBase {
         SmartDashboard.putNumber("TopRPM", getTopRPM());
         SmartDashboard.putNumber("BottomRPM", getBottomRPM());
 
-        distance = getDistanceToHub();
     }
 
         // /** Spin shooter motors */
@@ -185,8 +199,30 @@ public class ShooterSubsystem extends SubsystemBase {
                 && Math.abs(getBottomRPM() - bottomTarget) < toleranceRPM;
         }
 
-    public double getDistanceToHub(){
-        var result = camera.getLatestResult();
+        public double getDistanceToHub(Vision vision, int tagId1, int tagId2)
+        {
+
+            double dist1 = vision.getDistanceFromAprilTag(tagId1);
+            double dist2 = vision.getDistanceFromAprilTag(tagId2);
+
+            double distance;
+
+            if (dist1 > 0 && dist2 > 0) {
+                distance = (dist1 + dist2) / 2.0; // average
+            } else if (dist1 > 0) {
+                distance = dist1;
+            } else if (dist2 > 0) {
+                distance = dist2;
+            } else {
+                return -1; // no tag seen
+            }
+
+            double offset = 0.3;
+            return distance + offset;
+        }
+
+/*    public double getDistanceToHub(){
+        var result = camera1.getLatestResult();
 
         if(result.hasTargets()){
             for(PhotonTrackedTarget target : result.getTargets()){
@@ -198,12 +234,13 @@ public class ShooterSubsystem extends SubsystemBase {
 
                     double horizontalDistance = Math.sqrt(x*x + y*y);
 
-                    return horizontalDistance;
+                    return horizontalDistance ;
                 }
             }
         }
         return -1;
     }
+        */
 }
 
 

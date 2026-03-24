@@ -3,8 +3,7 @@ package frc.robot.commands;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.subsystems.HopperSubsystem;
 
-
-//Feeds balls rotating around the hopper to the shooter
+// Feeds balls rotating around the hopper to the shooter
 public class feedBallsCommand extends Command {
     
     private final HopperSubsystem hopper; 
@@ -20,9 +19,12 @@ public class feedBallsCommand extends Command {
     }
 
     @Override
-    public void end(boolean interrupted) {
-        hopper.brake();
+    public boolean isFinished() {
+        return false; // run while held
     }
 
+    @Override
+    public void end(boolean interrupted) {
+        hopper.stop();
+    }
 }
-    
