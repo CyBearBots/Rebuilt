@@ -35,7 +35,7 @@ public class ShooterSubsystem extends SubsystemBase {
 
     private double kP = ShooterConstants.kP;
     private double kI = ShooterConstants.kI;
-    private double kD = ShooterConstants.kD;
+    private double kD = ShooterConstants.kD; 
 
     private double kS = ShooterConstants.kS;
     private double kV = ShooterConstants.kV;
@@ -98,6 +98,10 @@ public class ShooterSubsystem extends SubsystemBase {
 
         // basic linear model
         double rpm = kSlope * distanceMeters + kIntercept;
+
+        if(distanceMeters == 0){
+            return ShooterConstants.topRPMDefault;
+        }
 
         return rpm;
     }

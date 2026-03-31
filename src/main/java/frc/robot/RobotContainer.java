@@ -133,7 +133,10 @@ public class RobotContainer
     //NamedCommands.registerCommand("test", Commands.print("I EXIST"));
     NamedCommands.registerCommand("ResetGyro", (Commands.runOnce(drivebase::zeroGyroWithAlliance)));
     NamedCommands.registerCommand("FeedBalls", new feedBallsCommand(hopperSubsystem).withTimeout(5));
-    NamedCommands.registerCommand("ShootBalls", new shootBallsCommand(shooterSubsystem).withTimeout(6));
+    NamedCommands.registerCommand("ShootBalls",
+    new shootBallsCommand(shooterSubsystem,
+        ShooterConstants.topRPMDefault,
+        ShooterConstants.topRPMDefault * ShooterConstants.spinRatio).withTimeout(6));
     NamedCommands.registerCommand("ArmDown", new armDownCommand(armSubsystem).withTimeout(1));
     NamedCommands.registerCommand("IntakeBalls", new intakeBallsCommand(intakeSubsystem).withTimeout(5));
 
@@ -151,9 +154,10 @@ public class RobotContainer
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
     operatorXbox.rightTrigger().whileTrue(
-      new shootBallsCommand(
-        shooterSubsystem
-    ));
+    new shootBallsCommand(shooterSubsystem,
+        ShooterConstants.topRPMDefault,
+        ShooterConstants.topRPMDefault * ShooterConstants.spinRatio));
+  
 
     operatorXbox.leftTrigger().whileTrue(new feedBallsCommand(hopperSubsystem));
     operatorXbox.a().whileTrue(new intakeBallsCommand(intakeSubsystem));
@@ -164,6 +168,7 @@ public class RobotContainer
 
     driverXbox.b().onTrue((Commands.runOnce(drivebase::zeroGyroWithAlliance)));
     driverXbox.a().whileTrue(new thiefShootCommand(shooterSubsystem));
+    driverXbox.y().whileTrue(new AutoTrenchDrive(drivebase));
 
     driverXbox.rightTrigger().whileTrue(
       new passBallsCommand(

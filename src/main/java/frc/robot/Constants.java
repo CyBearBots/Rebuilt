@@ -84,8 +84,8 @@ public final class Constants
 
     public static final double rpmTolerance = 75;
 
-    public static final double passRPM = -2100;
-    public static final double passSpinRatio = -1.1;
+    public static final double passRPM = -1050;//-2100
+    public static final double passSpinRatio = -1.4;//-1.1
   }
 
   public static class VisionConstants
