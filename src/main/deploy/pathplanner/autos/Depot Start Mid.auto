@@ -11,13 +11,19 @@
           }
         },
         {
+          "type": "path",
+          "data": {
+            "pathName": "Mid Depot"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "named",
                 "data": {
-                  "pathName": "Neutral Right"
+                  "name": "ShootBalls"
                 }
               },
               {
@@ -33,10 +39,29 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "ArmDown"
+                        "name": "FeedBalls"
                       }
                     }
                   ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Copy of Mid Depot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ArmDown"
                 }
               }
             ]
@@ -55,7 +80,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Copy of Neutral Right"
+                  "pathName": "Intake Depot"
                 }
               }
             ]
@@ -64,7 +89,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Copy of Copy of Neutral Right"
+            "pathName": "Depot Shoot"
           }
         },
         {
@@ -103,6 +128,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "RCC Autos",
+  "folder": "Comp Autos",
   "choreoAuto": false
 }

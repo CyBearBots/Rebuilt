@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 7.877,
-        "y": 2.2
+        "y": 2.505
       },
       "prevControl": null,
       "nextControl": {
         "x": 7.494132530120482,
-        "y": 0.9643132530120488
+        "y": 1.2693132530120486
       },
       "isLocked": false,
       "linkedName": null
@@ -66,7 +66,7 @@
     "rotation": 32.058979856332115
   },
   "reversed": false,
-  "folder": "neutral zone rcc paths",
+  "folder": "More comp paths",
   "idealStartingState": {
     "velocity": 0.0,
     "rotation": 90.0

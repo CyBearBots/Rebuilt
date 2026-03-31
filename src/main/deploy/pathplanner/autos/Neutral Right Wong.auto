@@ -17,7 +17,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Neutral Left"
+                  "pathName": "Neutral Right"
                 }
               },
               {
@@ -55,7 +55,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Copy of Copy of Neutral Left"
+                  "pathName": "Copy of Neutral Right"
                 }
               }
             ]
@@ -64,7 +64,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Copy of Neutral Left"
+            "pathName": "Copy of Copy of Neutral Right"
           }
         },
         {
@@ -103,6 +103,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "RCC Autos",
+  "folder": "Comp Autos",
   "choreoAuto": false
 }

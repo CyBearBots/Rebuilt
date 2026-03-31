@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Mid"
+            "pathName": "Left Depot"
           }
         },
         {
@@ -49,27 +49,47 @@
           }
         },
         {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Copy of Left Depot"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "ArmDown"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeBalls"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Intake Depot"
+                }
+              }
+            ]
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "Copy of Mid"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ArmDown"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.0
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Copy of Copy of Mid"
+            "pathName": "Depot Shoot"
           }
         },
         {
@@ -108,6 +128,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "RCC Autos",
+  "folder": "Comp Autos",
   "choreoAuto": false
 }

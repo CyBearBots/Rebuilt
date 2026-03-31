@@ -132,13 +132,13 @@ public class RobotContainer
     //Create the NamedCommands that will be used in PathPlanner
     //NamedCommands.registerCommand("test", Commands.print("I EXIST"));
     NamedCommands.registerCommand("ResetGyro", (Commands.runOnce(drivebase::zeroGyroWithAlliance)));
-    NamedCommands.registerCommand("FeedBalls", new feedBallsCommand(hopperSubsystem).withTimeout(5));
+    NamedCommands.registerCommand("FeedBalls", new feedBallsCommand(hopperSubsystem).withTimeout(3));
     NamedCommands.registerCommand("ShootBalls",
     new shootBallsCommand(shooterSubsystem,
         ShooterConstants.topRPMDefault,
         ShooterConstants.topRPMDefault * ShooterConstants.spinRatio).withTimeout(6));
     NamedCommands.registerCommand("ArmDown", new armDownCommand(armSubsystem).withTimeout(1));
-    NamedCommands.registerCommand("IntakeBalls", new intakeBallsCommand(intakeSubsystem).withTimeout(5));
+    NamedCommands.registerCommand("IntakeBalls", new intakeBallsCommand(intakeSubsystem).withTimeout(4));
 
 
     //Have the autoChooser pull in all PathPlanner autos as options
@@ -178,7 +178,6 @@ public class RobotContainer
     ));
 
   }
-  
 
   /**
    * Use this method to define your trigger->command mappings. Triggers can be created via the
