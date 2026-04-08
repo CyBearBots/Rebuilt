@@ -51,11 +51,12 @@ public final class Constants
 
   public static class ArmConstants
   {
-    public static final double kP = 0.04;
+    public static final double kPUp = 0.05; //.042
+    public static final double kPDown = 0.04;
     public static final double kI = 0.0;
     public static final double kD = 0.0;
 
-    public static final double armUpLimit = 23.7;
+    public static final double armUpLimit = 23.3;
     public static final double armDownLimit = 0.0;
 
   }
@@ -71,21 +72,22 @@ public final class Constants
     // TOP RPM > BOTTOM RPM = TOPSPIN, SHALLOWER LAUNCH ANGLE
     // BOTTOM RPM > TOP RPM = BACKSPIN, STEEPER LAUNCH ANGLE
 
-    public static final double topRPMDefault = -1050;
+    public static final double topRPMDefault = -1060; //-1060
     public static final double spinRatio = -1.4; // Above 1 = backspin, Below 1 = topspin (ignoring negative sign, that's just for motor direction)
+    public static final double spinRationUnder5Ft = -1.6;
 
     public static double kP = 0.0002;
     public static double kI = 0;
     public static double kD = 0;
 
     public static double kS = 0;
-    public static double kV = 0.11;
+    public static double kV = 0.12;
     public static double kA = 0;
 
     public static final double rpmTolerance = 75;
 
-    public static final double passRPM = -1050;//-2100
-    public static final double passSpinRatio = -1.4;//-1.1
+    public static final double passRPM = -2100;
+    public static final double passSpinRatio = -1.1;
   }
 
   public static class VisionConstants

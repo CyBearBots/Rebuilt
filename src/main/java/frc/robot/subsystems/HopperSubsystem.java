@@ -16,13 +16,13 @@ public class HopperSubsystem extends SubsystemBase {
     private final Timer reverseTimer  = new Timer();
     private final Timer cooldownTimer = new Timer();
 
-    private static final double RUN_SPEED     = -0.7;
-    private static final double SLOW_SPEED    = -0.3;
-    private static final double REVERSE_SPEED =  -0.4;
-    private static final double REVERSE_TIME  =  2.0;
+    private static final double RUN_SPEED     = 0.7;
+    private static final double SLOW_SPEED    = 0.3;
+    private static final double REVERSE_SPEED = -0.4;
+    private static final double REVERSE_TIME  =  -2.0;
     private static final double COOLDOWN_TIME =  1.0;
-    private static final double FAST_TIME     =  0.3;
-    private static final double SLOW_TIME     =  0.2;
+    private static final double FAST_TIME     =  -0.3;
+    private static final double SLOW_TIME     =  -0.2;
 
     private boolean isSpinning  = false;
     private boolean isReversing = false;
@@ -36,7 +36,7 @@ public class HopperSubsystem extends SubsystemBase {
     public void spin() {
         isSpinning  = true;
         isReversing = false;
-        feederMotor.set(0.7);
+        feederMotor.set(1.0);
         pulseTimer.restart();
         reverseTimer.stop();
     }
@@ -49,7 +49,7 @@ public class HopperSubsystem extends SubsystemBase {
             pulseTimer.stop();
         }
         hopperMotor.set(REVERSE_SPEED);
-        feederMotor.set(-0.5); // reverse feeder too
+        feederMotor.set(-0.5);// reverse feeder too
     }
 
     public void stop() {

@@ -22,6 +22,7 @@ public class armDownCommand extends Command {
 
     @Override
     public boolean isFinished(){
+        
         return arm.atPosition(ArmConstants.armUpLimit);
     }
 

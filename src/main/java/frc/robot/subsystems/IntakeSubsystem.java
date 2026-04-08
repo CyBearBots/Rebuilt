@@ -23,7 +23,11 @@ public class IntakeSubsystem extends SubsystemBase {
     }
 
     public void spin() {
-        motor.set(-0.7);
+        motor.set(-0.6);
+    }
+
+    public void slowSpin() {
+    motor.set(-0.2); 
     }
 
     public void brake() {

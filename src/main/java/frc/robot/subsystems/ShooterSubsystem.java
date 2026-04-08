@@ -92,9 +92,9 @@ public class ShooterSubsystem extends SubsystemBase {
     }
     public double calculateRPMFromDistance(double distanceMeters) {
 
-        //TUNE THESE
-        double kSlope = -900;   // how much RPM changes per meter
-        double kIntercept = -500; // base RPM
+        // tuned, data from LSRL (4.5ft 860rpm, 8ft 1060rpm, 12ft 1160rpm)
+        double kSlope = 129.97;   // how much RPM changes per meter 
+        double kIntercept = 702.899; // base RPM 
 
         // basic linear model
         double rpm = kSlope * distanceMeters + kIntercept;
@@ -103,7 +103,7 @@ public class ShooterSubsystem extends SubsystemBase {
             return ShooterConstants.topRPMDefault;
         }
 
-        return rpm;
+        return rpm * -1;
     }
 
     public void setTargetRPM(double topRPM, double bottomRPM) {

@@ -36,6 +36,8 @@ import swervelib.SwerveInputStream;
 import frc.robot.subsystems.swervedrive.Vision;
 import frc.robot.commands.*;
 import edu.wpi.first.math.filter.SlewRateLimiter;
+import edu.wpi.first.cameraserver.CameraServer; 
+import edu.wpi.first.cscore.HttpCamera;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -54,6 +56,14 @@ public class RobotContainer
   private final HopperSubsystem hopperSubsystem = new HopperSubsystem();
   private final ArmSubsystem armSubsystem = new ArmSubsystem();
 
+  public void initCameras() {
+      HttpCamera cam1 = new HttpCamera("Camera1", "http://photonvision.local:1183/stream.mjpg");
+      HttpCamera cam2 = new HttpCamera("Camera3", "http://photonvision.local:1181/stream.mjpg");
+
+      CameraServer.startAutomaticCapture(cam1);
+      CameraServer.startAutomaticCapture(cam2);
+  }
+
 
 
   private final SwerveSubsystem       drivebase  = new SwerveSubsystem(new File(Filesystem.getDeployDirectory(),
@@ -70,10 +80,10 @@ public class RobotContainer
   private final SlewRateLimiter rotateLimiter = new SlewRateLimiter(2.5);
 
   SwerveInputStream driveAngularVelocity = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                () -> xLimiter.calculate(driverXbox.getLeftY() * -1),
-                                                                () -> yLimiter.calculate(driverXbox.getLeftX() * -1))
+                                                                () -> xLimiter.calculate(driverXbox.getLeftY() * 1),
+                                                                () -> yLimiter.calculate(driverXbox.getLeftX() * 1))
                                                             .withControllerRotationAxis(
-                                                                () -> rotateLimiter.calculate(-driverXbox.getRightX()))
+                                                                () -> rotateLimiter.calculate(driverXbox.getRightX()))
                                                             .deadband(OperatorConstants.DEADBAND)
                                                             .scaleTranslation(0.8)
                                                             .allianceRelativeControl(true);
@@ -92,9 +102,9 @@ public class RobotContainer
                                                              .allianceRelativeControl(false);
 
   SwerveInputStream driveAngularVelocityKeyboard = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                        () -> driverXbox.getLeftY(),
-                                                                        () -> driverXbox.getLeftX())
-                                                                    .withControllerRotationAxis(() -> driverXbox.getRawAxis(
+                                                                        () -> -driverXbox.getLeftY(),
+                                                                        () -> -driverXbox.getLeftX())
+                                                                    .withControllerRotationAxis(() -> -driverXbox.getRawAxis(
                                                                         2))
                                                                     .deadband(OperatorConstants.DEADBAND)
                                                                     .scaleTranslation(0.8)
@@ -165,6 +175,7 @@ public class RobotContainer
     operatorXbox.leftBumper().onTrue(new armUpCommand(armSubsystem));
     operatorXbox.y().whileTrue(new driveAndShootCommand(drivebase.getSwerveDrive(), vision, shooterSubsystem));
     operatorXbox.x().whileTrue(new reverseHopperCommand(hopperSubsystem));
+    operatorXbox.b().whileTrue(new calculateRPMSCommand(shooterSubsystem, vision));
 
     driverXbox.b().onTrue((Commands.runOnce(drivebase::zeroGyroWithAlliance)));
     driverXbox.a().whileTrue(new thiefShootCommand(shooterSubsystem));

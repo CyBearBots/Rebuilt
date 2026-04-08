@@ -14,6 +14,8 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.PersistMode;
 import com.revrobotics.ResetMode;
 
+import frc.robot.Constants.ArmConstants;
+
 public class ArmSubsystem extends SubsystemBase {
 
     private SparkMax motor;
@@ -23,12 +25,10 @@ public class ArmSubsystem extends SubsystemBase {
     private static final double ARM_UP_LIMIT   = ArmConstants.armUpLimit;
     private static final double ARM_DOWN_LIMIT = ArmConstants.armDownLimit;
 
-    // private final double ARM_UP_SPEED   =  0.25;
-    // private final double ARM_DOWN_SPEED = -0.3;
-
-    private double kP = ArmConstants.kP;
-    private double kI = ArmConstants.kI;
-    private double kD = ArmConstants.kD;
+    private double kPUp   = ArmConstants.kPUp;
+    private double kPDown = ArmConstants.kPDown;
+    private double kI     = ArmConstants.kI;
+    private double kD     = ArmConstants.kD;
 
     public ArmSubsystem() {
         motor = new SparkMax(12, MotorType.kBrushless);
@@ -36,11 +36,17 @@ public class ArmSubsystem extends SubsystemBase {
         SparkMaxConfig config = new SparkMaxConfig();
 
         config.closedLoop
-        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-        .p(kP)
-        .i(kI)
-        .d(kD)
-        .outputRange(-1.0, 1.0);
+            .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+
+            .p(kPUp, ClosedLoopSlot.kSlot0)
+            .i(kI,   ClosedLoopSlot.kSlot0)
+            .d(kD,   ClosedLoopSlot.kSlot0)
+
+            .p(kPDown, ClosedLoopSlot.kSlot1)
+            .i(kI,     ClosedLoopSlot.kSlot1)
+            .d(kD,     ClosedLoopSlot.kSlot1)
+
+            .outputRange(-1.0, 1.0);
 
         motor.configure(
             config,
@@ -53,49 +59,36 @@ public class ArmSubsystem extends SubsystemBase {
 
         pid = motor.getClosedLoopController();
 
-        SmartDashboard.putNumber("Arm kP", kP);
+        SmartDashboard.putNumber("Arm kP Up", kPUp);
+        SmartDashboard.putNumber("Arm kP Down", kPDown);
         SmartDashboard.putNumber("Arm kI", kI);
         SmartDashboard.putNumber("Arm kD", kD);
-    
     }
 
-    public void setPosition(double target){
+    public void setPosition(double target, ClosedLoopSlot slot){
         pid.setSetpoint(
-            target, 
+            target,
             SparkBase.ControlType.kPosition,
-            ClosedLoopSlot.kSlot0,
-            0 // no feed forward as of now
+            slot,
+            0
         );
     }
 
     public void armUp() {
-        // if (encoder.getPosition() < ARM_UP_LIMIT) {
-        //     motor.set(ARM_UP_SPEED);
-        // } else {
-        //     stop();
-        // }
-        // //motor.set(ARM_UP_SPEED);
-
-        setPosition(ARM_UP_LIMIT);
+        setPosition(ARM_UP_LIMIT, ClosedLoopSlot.kSlot1); 
     }
 
     public void armDown() {
-    //     if (encoder.getPosition() > ARM_DOWN_LIMIT) {
-    //         motor.set(ARM_DOWN_SPEED);
-    //     } else {
-    //         stop();
-    //     }
-    //    // motor.set(ARM_DOWN_SPEED);
-
-        setPosition(ARM_DOWN_LIMIT);
+        setPosition(ARM_DOWN_LIMIT, ClosedLoopSlot.kSlot0); 
     }
 
     public void stop() {
-       // motor.stopMotor();
-
-       // 0 since dont want motor to work when resting on bumper
-
-       pid.setSetpoint(0, SparkBase.ControlType.kDutyCycle, ClosedLoopSlot.kSlot0, 0);
+        pid.setSetpoint(
+            0,
+            SparkBase.ControlType.kDutyCycle,
+            ClosedLoopSlot.kSlot0,
+            0
+        );
     }
 
     public double getPosition() {
@@ -106,27 +99,34 @@ public class ArmSubsystem extends SubsystemBase {
         return Math.abs(getPosition() - target) < 0.5;
     }
 
-
     @Override
     public void periodic() {
 
-        // for pid tuning using the dashboard
+        double newPUp   = SmartDashboard.getNumber("Arm kP Up", kPUp);
+        double newPDown = SmartDashboard.getNumber("Arm kP Down", kPDown);
+        double newI     = SmartDashboard.getNumber("Arm kI", kI);
+        double newD     = SmartDashboard.getNumber("Arm kD", kD);
 
-        double newP = SmartDashboard.getNumber("Arm kP", kP);
-        double newI = SmartDashboard.getNumber("Arm kI", kI);
-        double newD = SmartDashboard.getNumber("Arm kD", kD);
+        if (newPUp != kPUp || newPDown != kPDown || newI != kI || newD != kD) {
 
-        if (newP != kP || newI != kI || newD != kD) {
-            kP = newP;
+            kPUp = newPUp;
+            kPDown = newPDown;
             kI = newI;
             kD = newD;
 
             SparkMaxConfig config = new SparkMaxConfig();
+
             config.closedLoop
                 .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
-                .p(kP)
-                .i(kI)
-                .d(kD)
+
+                .p(kPUp, ClosedLoopSlot.kSlot0)
+                .i(kI,   ClosedLoopSlot.kSlot0)
+                .d(kD,   ClosedLoopSlot.kSlot0)
+
+                .p(kPDown, ClosedLoopSlot.kSlot1)
+                .i(kI,     ClosedLoopSlot.kSlot1)
+                .d(kD,     ClosedLoopSlot.kSlot1)
+
                 .outputRange(-1.0, 1.0);
 
             motor.configure(
