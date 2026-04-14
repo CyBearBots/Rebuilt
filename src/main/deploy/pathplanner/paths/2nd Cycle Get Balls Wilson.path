@@ -1,0 +1,99 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 6.74,
+        "y": 7.073
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.783710843373493,
+        "y": 6.166
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.707337349397591,
+        "y": 4.515819277108434
+      },
+      "prevControl": {
+        "x": 6.707337349397591,
+        "y": 5.674156626506025
+      },
+      "nextControl": {
+        "x": 6.707337349397591,
+        "y": 3.673250960517368
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.865903614457832,
+        "y": 4.515819277108434
+      },
+      "prevControl": {
+        "x": 6.124986527935893,
+        "y": 3.9717451588045076
+      },
+      "nextControl": {
+        "x": 5.647349397590361,
+        "y": 4.97478313253012
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.712915662650602,
+        "y": 6.679506024096386
+      },
+      "prevControl": {
+        "x": 5.723843373493976,
+        "y": 5.269831325301206
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.9236514522821653,
+      "rotationDegrees": -89.99077214976073
+    },
+    {
+      "waypointRelativePos": 1.7153526970954103,
+      "rotationDegrees": -178.60153029653483
+    },
+    {
+      "waypointRelativePos": 1.9842323651452385,
+      "rotationDegrees": 92.36658632492683
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 2.1,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 91.78991060824602
+  },
+  "reversed": false,
+  "folder": "RCC Paths",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -87.92421204449201
+  },
+  "useDefaultConstraints": false
+}

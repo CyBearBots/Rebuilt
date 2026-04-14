@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.391,
-        "y": 2.899
+        "x": 7.986,
+        "y": 3.598
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.237903614457831,
-        "y": 1.040807228915662
+        "x": 7.406710843373492,
+        "y": 2.537903614457831
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 4.336024096385542,
-        "y": 0.5381325301204822
+        "x": 5.559927710843374,
+        "y": 2.363060240963856
       },
       "prevControl": {
-        "x": 2.1067710843373493,
-        "y": 0.5818433734939763
+        "x": 6.707337349397591,
+        "y": 2.363060240963856
       },
       "nextControl": {
-        "x": 4.9682951483556215,
-        "y": 0.5257350585132257
+        "x": 1.8116591736772811,
+        "y": 2.3630602409638564
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 6.963195435092723,
-        "y": 0.7421112696148362
+        "x": 2.500168674698795,
+        "y": 2.964
       },
       "prevControl": {
-        "x": 6.809710281713995,
-        "y": 0.5447732152707523
+        "x": 2.653156626506024,
+        "y": 2.679963855421686
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,7 +46,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.9975103734439816,
+      "waypointRelativePos": 1.0,
       "rotationDegrees": 0.0
     }
   ],
@@ -54,12 +54,25 @@
     {
       "name": "Constraints Zone",
       "minWaypointRelativePos": 0,
-      "maxWaypointRelativePos": 1.0,
+      "maxWaypointRelativePos": 0.9985111662530979,
       "constraints": {
-        "maxVelocity": 10.0,
+        "maxVelocity": 3.0,
         "maxAcceleration": 5.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    },
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 0,
+      "constraints": {
+        "maxVelocity": 3.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 600.0,
+        "maxAngularAcceleration": 1.0,
         "nominalVoltage": 12.0,
         "unlimited": false
       }
@@ -77,13 +90,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 114.07549825507887
+    "rotation": 32.058979856332115
   },
   "reversed": false,
-  "folder": "RCC Paths",
+  "folder": "Albany Paths",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 24.31
+    "velocity": 0.0,
+    "rotation": 98.47
   },
   "useDefaultConstraints": true
 }

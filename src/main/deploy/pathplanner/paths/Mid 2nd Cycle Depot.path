@@ -20,7 +20,7 @@
         "y": 5.925493975903614
       },
       "prevControl": {
-        "x": 1.247524993964819,
+        "x": 1.2475249939648192,
         "y": 5.7627961325396235
       },
       "nextControl": null,
@@ -59,7 +59,7 @@
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Comp Paths",
+  "folder": "also RCC paths",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 24.31

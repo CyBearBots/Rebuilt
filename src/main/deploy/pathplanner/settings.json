@@ -3,13 +3,15 @@
   "robotLength": 0.698,
   "holonomicMode": true,
   "pathFolders": [
-    "Comp Paths",
+    "Albany Paths",
+    "RCC Paths",
     "Wong",
-    "More comp paths",
+    "also RCC paths",
     "rest"
   ],
   "autoFolders": [
-    "Comp Autos",
+    "Albany Autos",
+    "RCC Autos",
     "Wong"
   ],
   "defaultMaxVel": 3.0,

@@ -30,3 +30,57 @@ public class armUpCommand extends Command {
         arm.stop();
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+package frc.robot.commands;
+
+import edu.wpi.first.wpilibj2.command.Command;
+import frc.robot.Constants.ArmConstants;
+import frc.robot.subsystems.ArmSubsystem;
+import frc.robot.subsystems.IntakeSubsystem;
+
+public class armUpCommand extends Command {
+    private final ArmSubsystem arm;
+    private final IntakeSubsystem intake;
+
+    public armUpCommand(ArmSubsystem arm, IntakeSubsystem intake) {
+        this.arm = arm;
+        this.intake = intake;
+        addRequirements(arm, intake);
+    }
+
+    @Override
+    public void initialize() {
+        arm.armUp();
+        intake.spin(); // or slowSpin() if you want it gentler
+    }
+
+    @Override
+    public boolean isFinished() {
+        return arm.atPosition(ArmConstants.armUpLimit);
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        arm.stop();
+        intake.brake();
+    }
+}
+    */

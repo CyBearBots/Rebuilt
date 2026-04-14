@@ -56,15 +56,23 @@ public final class Constants
     public static final double kI = 0.0;
     public static final double kD = 0.0;
 
-    public static final double armUpLimit = 23.3;
+    public static final double armUpLimit = 24.3;
     public static final double armDownLimit = 0.0;
 
   }
 
-  public static class IntakeConstants
+  /*public static class IntakeConstants
   {
-    public static final int intakeMotorId = 11;
-  }
+      public static final int intakeMotorId = 13;
+      
+      public static final double kP = 0.002;
+      public static final double kI = 0.0;
+      public static final double kD = 0.0;
+      public static final double kV = 0.12; // feedforward, same as shooter
+
+      public static final double spinRPM = -5400;     // tune these
+      public static final double slowSpinRPM = -5400;
+  }*/
 
   public static class ShooterConstants
   {

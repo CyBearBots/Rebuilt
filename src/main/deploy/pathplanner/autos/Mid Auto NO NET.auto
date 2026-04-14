@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left Depot Start"
+            "pathName": "Mid Start"
           }
         },
         {
@@ -49,47 +49,27 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "path",
           "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Left Depot"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "ArmDown"
-                }
-              }
-            ]
+            "pathName": "Go to HP"
           }
         },
         {
-          "type": "parallel",
+          "type": "named",
           "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeBalls"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Intake Depot"
-                }
-              }
-            ]
+            "name": "ArmDown"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Depot Shoot"
+            "pathName": "Hp to Shoot"
           }
         },
         {
@@ -128,6 +108,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "RCC Autos",
+  "folder": "Albany Autos",
   "choreoAuto": false
 }

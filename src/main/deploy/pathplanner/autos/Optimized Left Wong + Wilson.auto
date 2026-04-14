@@ -11,19 +11,13 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "Left Depot Start"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "ShootBalls"
+                  "pathName": "Neutral Left Start"
                 }
               },
               {
@@ -39,29 +33,10 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "FeedBalls"
+                        "name": "ArmDown"
                       }
                     }
                   ]
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Left Depot"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "ArmDown"
                 }
               }
             ]
@@ -80,7 +55,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Intake Depot"
+                  "pathName": "Wilson Optimized get balls"
                 }
               }
             ]
@@ -89,7 +64,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Depot Shoot"
+            "pathName": "Bump left nuetral"
           }
         },
         {
@@ -122,6 +97,37 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Mid 2nd Cycle Neutral Wilson"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeBalls"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Bump Variation 2nd Cycle Get Balls Wilson"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Bump Start"
           }
         }
       ]

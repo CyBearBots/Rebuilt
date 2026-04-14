@@ -38,6 +38,7 @@ import frc.robot.commands.*;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.cameraserver.CameraServer; 
 import edu.wpi.first.cscore.HttpCamera;
+import edu.wpi.first.cscore.MjpegServer;
 
 /**
  * This class is where the bulk of the robot should be declared. Since Command-based is a "declarative" paradigm, very
@@ -59,9 +60,13 @@ public class RobotContainer
   public void initCameras() {
       HttpCamera cam1 = new HttpCamera("Camera1", "http://photonvision.local:1183/stream.mjpg");
       HttpCamera cam2 = new HttpCamera("Camera3", "http://photonvision.local:1181/stream.mjpg");
+      HttpCamera limelightCam = new HttpCamera("Limelight", "http://limelight.local:5800/stream.mjpg");
 
       CameraServer.startAutomaticCapture(cam1);
       CameraServer.startAutomaticCapture(cam2);
+
+      MjpegServer limelightServer = new MjpegServer("LimelightServer", 1185);
+      limelightServer.setSource(limelightCam);
   }
 
 
@@ -88,6 +93,7 @@ public class RobotContainer
                                                             .scaleTranslation(0.8)
                                                             .allianceRelativeControl(true);
   private final Vision vision = new Vision(drivebase::getPose, drivebase.getSwerveDrive().field);
+
   /**
    * Clone's the angular velocity input stream and converts it to a fieldRelative input stream.
    */
@@ -102,9 +108,9 @@ public class RobotContainer
                                                              .allianceRelativeControl(false);
 
   SwerveInputStream driveAngularVelocityKeyboard = SwerveInputStream.of(drivebase.getSwerveDrive(),
-                                                                        () -> -driverXbox.getLeftY(),
-                                                                        () -> -driverXbox.getLeftX())
-                                                                    .withControllerRotationAxis(() -> -driverXbox.getRawAxis(
+                                                                        () -> driverXbox.getLeftY(),
+                                                                        () -> driverXbox.getLeftX())
+                                                                    .withControllerRotationAxis(() -> driverXbox.getRawAxis(
                                                                         2))
                                                                     .deadband(OperatorConstants.DEADBAND)
                                                                     .scaleTranslation(0.8)
@@ -141,7 +147,7 @@ public class RobotContainer
     
     //Create the NamedCommands that will be used in PathPlanner
     //NamedCommands.registerCommand("test", Commands.print("I EXIST"));
-    NamedCommands.registerCommand("ResetGyro", (Commands.runOnce(drivebase::zeroGyroWithAlliance)));
+    NamedCommands.registerCommand("ResetGyro", (Commands.runOnce(drivebase::zeroGyro)));
     NamedCommands.registerCommand("FeedBalls", new feedBallsCommand(hopperSubsystem).withTimeout(3));
     NamedCommands.registerCommand("ShootBalls",
     new shootBallsCommand(shooterSubsystem,
@@ -162,6 +168,7 @@ public class RobotContainer
     
     //Put the autoChooser on the SmartDashboard
     SmartDashboard.putData("Auto Chooser", autoChooser);
+    SmartDashboard.putNumber("Gyro", drivebase.getHeading().getDegrees());//for debug
 
     operatorXbox.rightTrigger().whileTrue(
     new shootBallsCommand(shooterSubsystem,
@@ -172,14 +179,16 @@ public class RobotContainer
     operatorXbox.leftTrigger().whileTrue(new feedBallsCommand(hopperSubsystem));
     operatorXbox.a().whileTrue(new intakeBallsCommand(intakeSubsystem));
     operatorXbox.rightBumper().onTrue(new armDownCommand(armSubsystem));
-    operatorXbox.leftBumper().onTrue(new armUpCommand(armSubsystem));
-    operatorXbox.y().whileTrue(new driveAndShootCommand(drivebase.getSwerveDrive(), vision, shooterSubsystem));
+    operatorXbox.leftBumper().whileTrue(
+        Commands.parallel(
+            new armUpCommand(armSubsystem),
+            new intakeBallsCommand(intakeSubsystem)));
     operatorXbox.x().whileTrue(new reverseHopperCommand(hopperSubsystem));
     operatorXbox.b().whileTrue(new calculateRPMSCommand(shooterSubsystem, vision));
 
     driverXbox.b().onTrue((Commands.runOnce(drivebase::zeroGyroWithAlliance)));
     driverXbox.a().whileTrue(new thiefShootCommand(shooterSubsystem));
-    driverXbox.y().whileTrue(new AutoTrenchDrive(drivebase));
+    driverXbox.y().whileTrue(new AutoTrenchDrive(drivebase, vision));
 
     driverXbox.rightTrigger().whileTrue(
       new passBallsCommand(

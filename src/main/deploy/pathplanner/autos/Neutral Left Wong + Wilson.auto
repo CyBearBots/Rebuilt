@@ -17,7 +17,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Neutral Left"
+                  "pathName": "Neutral Left Start"
                 }
               },
               {
@@ -64,7 +64,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Copy of Neutral Left"
+            "pathName": null
           }
         },
         {
@@ -98,11 +98,42 @@
               }
             ]
           }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Left Mid 2nd Cycle Neutral Wilson"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeBalls"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "2nd Cycle Get Balls Wilson"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2nd left cylce home"
+          }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "Comp Autos",
+  "folder": "RCC Autos",
   "choreoAuto": false
 }

@@ -1,0 +1,25 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "named",
+          "data": {
+            "name": "ResetGyro"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Neutral Right Start"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": "Albany Autos",
+  "choreoAuto": false
+}

@@ -11,9 +11,60 @@
           }
         },
         {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Neutral Left Start"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1.0
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "ArmDown"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeBalls"
+                }
+              },
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "Neutral Left Intake"
+                }
+              }
+            ]
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "Mid"
+            "pathName": "1st Cycle Neutral Left Shoot"
           }
         },
         {
@@ -49,37 +100,13 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "Copy of Mid"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ArmDown"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.0
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Copy of Copy of Mid"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "ShootBalls"
+                  "pathName": "2nd Cycle Left Intake"
                 }
               },
               {
@@ -89,13 +116,13 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 1.0
+                        "waitTime": 2.0
                       }
                     },
                     {
                       "type": "named",
                       "data": {
-                        "name": "FeedBalls"
+                        "name": "IntakeBalls"
                       }
                     }
                   ]
@@ -108,6 +135,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Comp Autos",
+  "folder": "Albany Autos",
   "choreoAuto": false
 }

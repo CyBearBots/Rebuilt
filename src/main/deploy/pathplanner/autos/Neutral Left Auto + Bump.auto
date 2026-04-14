@@ -11,19 +11,13 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "Left Depot Start"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "ShootBalls"
+                  "pathName": "Neutral Left Start"
                 }
               },
               {
@@ -39,29 +33,10 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "FeedBalls"
+                        "name": "ArmDown"
                       }
                     }
                   ]
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Left Depot"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "ArmDown"
                 }
               }
             ]
@@ -80,7 +55,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Intake Depot"
+                  "pathName": "Neutral Left Intake"
                 }
               }
             ]
@@ -89,7 +64,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Depot Shoot"
+            "pathName": "1st Cycle Left Neutral Bump"
           }
         },
         {
@@ -123,11 +98,43 @@
               }
             ]
           }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "2nd Cycle Left Intake"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 2.0
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "IntakeBalls"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": "RCC Autos",
+  "folder": "Albany Autos",
   "choreoAuto": false
 }

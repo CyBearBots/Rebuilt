@@ -13,7 +13,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Mid"
+            "pathName": "Mid Start"
           }
         },
         {
@@ -55,7 +55,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Copy of Mid Depot"
+                  "pathName": "Mid Depot"
                 }
               },
               {
@@ -128,6 +128,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "Comp Autos",
+  "folder": "RCC Autos",
   "choreoAuto": false
 }

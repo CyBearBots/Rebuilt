@@ -13,7 +13,63 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Left Depot Start"
+            "pathName": "Mid Start"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "named",
+                "data": {
+                  "name": "ShootBalls"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1.0
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "FeedBalls"
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Go to HP"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ArmDown"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Hp to Shoot"
           }
         },
         {
@@ -55,32 +111,26 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Left Depot"
+                  "pathName": "2nd Cycle Mid Intake"
                 }
               },
               {
-                "type": "named",
+                "type": "sequential",
                 "data": {
-                  "name": "ArmDown"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "named",
-                "data": {
-                  "name": "IntakeBalls"
-                }
-              },
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Intake Depot"
+                  "commands": [
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 1.5
+                      }
+                    },
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "IntakeBalls"
+                      }
+                    }
+                  ]
                 }
               }
             ]
@@ -89,7 +139,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Depot Shoot"
+            "pathName": "2nd Cycle Mid Shoot"
           }
         },
         {
@@ -128,6 +178,6 @@
     }
   },
   "resetOdom": true,
-  "folder": "RCC Autos",
+  "folder": "Albany Autos",
   "choreoAuto": false
 }

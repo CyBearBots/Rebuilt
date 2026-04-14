@@ -11,19 +11,13 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "Left Depot Start"
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "named",
+                "type": "path",
                 "data": {
-                  "name": "ShootBalls"
+                  "pathName": "Neutral Right Start"
                 }
               },
               {
@@ -33,35 +27,16 @@
                     {
                       "type": "wait",
                       "data": {
-                        "waitTime": 1.0
+                        "waitTime": 0.7
                       }
                     },
                     {
                       "type": "named",
                       "data": {
-                        "name": "FeedBalls"
+                        "name": "ArmDown"
                       }
                     }
                   ]
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "parallel",
-          "data": {
-            "commands": [
-              {
-                "type": "path",
-                "data": {
-                  "pathName": "Left Depot"
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "ArmDown"
                 }
               }
             ]
@@ -80,7 +55,7 @@
               {
                 "type": "path",
                 "data": {
-                  "pathName": "Intake Depot"
+                  "pathName": "Neutral Right Intake"
                 }
               }
             ]
@@ -89,7 +64,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Depot Shoot"
+            "pathName": "bump Copy of Neutral Right"
           }
         },
         {
@@ -122,6 +97,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2nd cycle right"
           }
         }
       ]
