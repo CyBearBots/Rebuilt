@@ -113,6 +113,8 @@ public class Robot extends TimedRobot
     //Print the selected autonomous command upon autonomous init
     System.out.println("Auto selected: " + m_autonomousCommand);
 
+    m_robotContainer.zeroGyroWithAlliance();
+
     // schedule the autonomous command selected in the autoChooser
     if (m_autonomousCommand != null)
     {
